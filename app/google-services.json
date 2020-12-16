@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "799835042702",
+    "project_id": "tablegamers-ecc11",
+    "storage_bucket": "tablegamers-ecc11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799835042702:android:8d92c68598a03a21a86adf",
+        "android_client_info": {
+          "package_name": "es.amunoz.tablegamers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "799835042702-qa88j8084p50pgcc5c5tff6mkeeqs83d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqfc6PE_Htz6zwPg-qTgcIR4FSVXhCEWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "799835042702-qa88j8084p50pgcc5c5tff6mkeeqs83d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
