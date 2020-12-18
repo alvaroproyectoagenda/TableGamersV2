@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">TableGamers</string>
+    <string name="email">Email</string>
+    <string name="log_password">Contraseña</string>
+    <string name="log_fogot_password">He olvidado mi contraseña</string>
+    <string name="log_access">Acceder</string>
+    <string name="log_register">Registrarse</string>
+    <string name="reg_name">Nombre</string>
+    <string name="reg_email">Email</string>
+    <string name="reg_password">Contraseña</string>
+    <string name="reg_pass_repeat">Repite contraseña</string>
+    <string name="reg_term_cond">Acepto los términos y condiciones</string>
+    <string name="reg_nickname">Nickname</string>
+    <string name="reg_phone">Telefono</string>
+    <string name="message_reg_user">Usuario registrado</string>
+    <string name="message_reg_user_error">Error al registrar usuario</string>
+    <string name="dialog_btn_ok">Aceptar</string>
+    <string name="lorem_ipsum_short">Lorem ipsum</string>
 </resources>
