@@ -1,13 +1,19 @@
 package es.amunoz.tablegamers.viewmodels
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import es.amunoz.tablegamers.models.User
+import es.amunoz.tablegamers.utils.Constants.Companion.TAG_ERROR
 
 class UserViewModel: ViewModel() {
 
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    val isAddUser: MutableLiveData<Boolean> =  MutableLiveData()
+
 
     init{
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
@@ -19,17 +25,19 @@ class UserViewModel: ViewModel() {
      */
     fun add(
         user: User
-    ): Boolean {
+    ) {
 
-        var res: Boolean = false
-        // firestore.collection("users").document(user.id).set(user)
-        firestore.collection("users").document("ase").set(user)
-            .addOnSuccessListener {
-                res = true
-            }
-            .addOnFailureListener {
-                res = false;
-            }
-        return res;
+        var idUser: String? = user.id
+
+        if(idUser != null){
+            firestore.collection("users").document(idUser).set(user)
+                .addOnSuccessListener {
+                    isAddUser.value = true
+                }
+                .addOnFailureListener {
+                    isAddUser.value = false
+                }
+        }
+
     }
 }
