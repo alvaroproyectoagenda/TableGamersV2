@@ -36,6 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/reg_email"
+                android:inputType="textEmailAddress"
                 android:text="@{email}" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -55,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tiet_password"
                 android:text="@{password}"
+                android:inputType="textPassword"
                 android:hint="@string/reg_password" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,6 +75,7 @@
                 android:id="@+id/tiet_repeat_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 android:hint="@string/reg_pass_repeat" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,6 +107,7 @@
             android:layout_marginBottom="16dp"
             android:text="@string/log_register"
             android:enabled="@{terms}"
+            android:onClick="clickRegister"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -159,6 +163,7 @@
                 android:id="@+id/tiet_phone"
                 android:layout_height="wrap_content"
                 android:hint="@string/reg_phone"
+                android:inputType="phone"
                 android:text="@{phone}" />
         </com.google.android.material.textfield.TextInputLayout>
 

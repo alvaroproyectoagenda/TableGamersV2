@@ -2,6 +2,8 @@ package es.amunoz.tablegamers
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -23,66 +25,100 @@ class RegisterActivity : AppCompatActivity(), StructViewData {
 
         initBinding()
         initViewModel()
-    }
 
-    override fun initComponent() {
-        TODO("Not yet implemented")
     }
-
     override fun initViewModel() {
+        //Init View model
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-    }
 
+        //Obervers ViewModel
+        viewModel.existNickname.observe(this, Observer { existNickname ->
+            if(existNickname){
+
+                var dialog = MessageDialog(this,TypeMessage.WARNING,
+                    "El nick {${binding.nickname}} ya está en uso"
+                )
+                dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                    override fun onClickOKButton() {
+                        binding.nickname = ""
+
+                    }
+                })
+            }
+        })
+        viewModel.isAddUser.observe(this, Observer { isAddUser ->
+            if (isAddUser) {
+
+                var dialog = MessageDialog(this,TypeMessage.SUCCESS, "¡Registrado con éxito!")
+                dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                    override fun onClickOKButton() {
+                        //Go to main
+                    }
+                })
+
+            } else {
+                var dialog = MessageDialog(this,TypeMessage.WARNING, viewModel.messageExceptionRegisterUser.value.toString())
+                dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                    override fun onClickOKButton() {
+
+                    }
+                })
+            }
+
+
+        })
+    }
     override fun initBinding() {
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_register)
-        binding.btnAdd.setOnClickListener {
-            clickActionRegister()
-        }
+        //Init
         binding.terms = false
+        //Events
+        binding.tietNickname.setOnFocusChangeListener { _, hasFocus ->
+
+            if(!hasFocus){
+              changeActionNickname()
+            }
+        }
     }
 
-    /**
-     * Metodo que inserta el objeto en Firestore y Auth
-     */
+
     private fun clickActionRegister(){
-        var id = MethodUtil.generateID()
-        val name = binding.tietName.text.toString()
-        val email = binding.tietEmail.text.toString()
-        val nickname = binding.tietNickname.text.toString()
-        val phone = binding.tietPhone.text.toString()
-        val pass = binding.tietPassword.text.toString()
-        val passRepeat = binding.tietRepeatPassword.text.toString()
+        val idVal = MethodUtil.generateID()
+        val nameVal = binding.tietName.text.toString()
+        val emailVal = binding.tietEmail.text.toString()
+        val nicknameVal = binding.tietNickname.text.toString()
+        val phoneVal = binding.tietPhone.text.toString()
+        val passVal = binding.tietPassword.text.toString()
+        val passRepeatVal = binding.tietRepeatPassword.text.toString()
 
 
         val validateField: MutableList<String> = mutableListOf()
         var validate = true
-        if (!ValidatorUtil.isEmail(email)   ){
+        if (!ValidatorUtil.isEmail(emailVal)   ){
             validateField.add("Email")
             validate = false
         }
-        if (ValidatorUtil.isEmpty(name)   ){
+        if (ValidatorUtil.isEmpty(nameVal)   ){
             validateField.add("Nombre")
             validate = false
         }
-        if (ValidatorUtil.isEmpty(nickname)   ){
+        if (ValidatorUtil.isEmpty(nicknameVal)   ){
             validateField.add("Nickname")
             validate = false
         }
-        if (!ValidatorUtil.isPhone(phone)   ){
+        if (!ValidatorUtil.isPhone(phoneVal)   ){
             validateField.add("Telefono")
             validate = false
         }
-        if (!ValidatorUtil.areEqualPassword(pass, passRepeat)   ){
+        if (!ValidatorUtil.areEqualPassword(passVal, passRepeatVal)   ){
             validateField.add("Passwords")
             validate = false
         }
 
-
-
         if(!validate){
             val info = validateField.joinToString("\n")
-            val dialog = MessageDialog(this,TypeMessage.INFO, "Debes de rellenar\n"+info)
+            val dialog = MessageDialog(this,TypeMessage.INFO, "Revisa los campos:\n"+info)
             dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
                 override fun onClickOKButton() {
                     validateField.removeAll(validateField)
@@ -90,38 +126,28 @@ class RegisterActivity : AppCompatActivity(), StructViewData {
                 }
             })
         } else {
-            /* var user = User().apply {
-             id = MethodUtil.generateID()
-             name = binding.tietName.text.toString()
-             email = binding.tietEmail.text.toString()
-             nickname = binding.tietEmail.text.toString()
-             phone = binding.tietPhone.text.toString()
+            var user = User().apply {
+             id = idVal
+             name = nameVal
+             email = emailVal
+             nickname = nicknameVal
+             phone = phoneVal
 
          }
-         viewModel.add(user)
-         viewModel.isAddUser.observe(this, Observer { isAddUser ->
-             if (isAddUser) {
-                 var dialog = MessageDialog(this,TypeMessage.SUCCESS, "¡Registrado con éxito!")
-                 dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
-                     override fun onClickOKButton() {
-
-                     }
-                 })
-
-             } else {
-                 var dialog = MessageDialog(this,TypeMessage.ERROR, "¡Ups! Ocurrio un error al registrar")
-                 dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
-                     override fun onClickOKButton() {
-
-                     }
-                 })
-             }
-
-
-         })*/
+         viewModel.registerUserAuth(emailVal, passVal, user)
 
         }
 
 
+    }
+    private fun changeActionNickname(){
+        val nickname = binding.tietNickname.text.toString()
+        if (!ValidatorUtil.isEmpty(nickname)){
+            viewModel.checkNickname(nickname)
+        }
+    }
+
+    fun clickRegister(view: View) {
+        clickActionRegister()
     }
 }

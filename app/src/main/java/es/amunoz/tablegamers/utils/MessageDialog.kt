@@ -36,7 +36,7 @@ class MessageDialog(private var myContext: Context, var type: TypeMessage, var m
         loadDialog()
     }
 
-    fun dimissDialog(){
+    public fun dimissDialog(){
         dialog.dismiss()
     }
     fun loadDialog(){
