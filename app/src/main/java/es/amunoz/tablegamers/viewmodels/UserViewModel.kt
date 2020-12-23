@@ -24,6 +24,7 @@ class UserViewModel: ViewModel() {
     val emailForgotSend: MutableLiveData<Boolean> =  MutableLiveData()
     val firebaseUser: MutableLiveData<FirebaseUser> =  MutableLiveData()
     val messageExceptionRegisterUser: MutableLiveData<String> =  MutableLiveData()
+    val user: MutableLiveData<User> =  MutableLiveData()
 
 
     init{
@@ -34,7 +35,7 @@ class UserViewModel: ViewModel() {
      * @return True o False en función de si se ha insertado correctamenteo no.
      * @param[user] Objeto de tipo User que vamos a insertar
      */
-    private fun add(
+     fun add(
         user: User
     ) {
 
@@ -68,7 +69,23 @@ class UserViewModel: ViewModel() {
                     Log.w(TAG_ERROR, "Error getting documents: ", exception)
                 }
     }
+    /**
+     * Comprobamos que el nickname esté disponible
+     * @param[nickname] String del nickname que tenemos que comprarar
+     */
+    fun getUser(
+        id: String
+    ) {
 
+        firestore.collection("users").document(id).get()
+            .addOnSuccessListener { document ->
+               user.value = document.toObject(User::class.java)
+            }
+            .addOnFailureListener { exception ->
+                user.value = null
+                Log.w(TAG_ERROR, "Error getting documents: ", exception)
+            }
+    }
     /**
      * Login user
      * @param[user] Objeto de tipo User que vamos a comprobar para loguear

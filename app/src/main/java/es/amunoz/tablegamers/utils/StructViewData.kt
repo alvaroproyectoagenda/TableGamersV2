@@ -1,5 +1,7 @@
 package es.amunoz.tablegamers.utils
 
+import android.view.LayoutInflater
+
 interface StructViewData {
 
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_ad">
+
+    <fragment
+        android:id="@+id/nav_ad"
+        android:name="es.amunoz.tablegamers.ui.ad.AdFragment"
+        android:label="@string/menu_ad"
+        tools:layout="@layout/fragment_ad" />
+
+    <fragment
+        android:id="@+id/nav_myad"
+        android:name="es.amunoz.tablegamers.ui.ad.AdFragment"
+        android:label="@string/menu_myad"
+        tools:layout="@layout/fragment_ad" />
+
+
+    <fragment
+        android:id="@+id/nav_event"
+        android:name="es.amunoz.tablegamers.ui.event.EventFragment"
+        android:label="@string/menu_event"
+        tools:layout="@layout/fragment_event" />
+
+    <fragment
+        android:id="@+id/nav_invitation"
+        android:name="es.amunoz.tablegamers.ui.invitation.InvitationFragment"
+        android:label="@string/menu_invitation"
+        tools:layout="@layout/fragment_invitation" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="es.amunoz.tablegamers.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <dialog
+        android:id="@+id/nav_logout"
+        android:name="es.amunoz.tablegamers.utils.ConfirmDialog"
+        tools:layout="@layout/dialog_confirm" />
+</navigation>

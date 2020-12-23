@@ -49,7 +49,7 @@ class RegisterActivity : AppCompatActivity(), StructViewData {
         viewModel.isAddUser.observe(this, Observer { isAddUser ->
             if (isAddUser) {
 
-                var dialog = MessageDialog(this,TypeMessage.SUCCESS, "¡Registrado con éxito!")
+                var dialog = MessageDialog(this,TypeMessage.SUCCESS, "¡Modificado con éxito!")
                 dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
                     override fun onClickOKButton() {
                         //Go to main
@@ -148,6 +148,6 @@ class RegisterActivity : AppCompatActivity(), StructViewData {
     }
 
     fun clickRegister(view: View) {
-        clickActionRegister()
+       clickActionRegister()
     }
 }

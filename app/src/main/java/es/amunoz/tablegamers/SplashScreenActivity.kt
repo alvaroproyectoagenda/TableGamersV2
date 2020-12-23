@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import es.amunoz.tablegamers.utils.Constants
 
-class MainActivity : Activity() {
+class SplashScreenActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -18,8 +18,9 @@ class MainActivity : Activity() {
         val user = FirebaseAuth.getInstance().currentUser
         //Si existe vamos al Main
         if(user!=null){
+
             Handler().postDelayed({
-               startActivity(Intent(this,LoginActivity::class.java))//Cambar por main
+                startActivity(Intent(this,NavigationMenuActivity::class.java))//Cambar por main
                 finish()
             }, Constants.SPLASH_SCREEN_TIME)
         //Si no existe vamos al Login

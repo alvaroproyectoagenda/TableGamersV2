@@ -52,7 +52,8 @@ class LoginActivity : AppCompatActivity(), StructViewData{
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         viewModel.firebaseUser.observe(this, Observer { firebaseUser ->
             if (firebaseUser != null) {
-                //LOGIN OK
+                startActivity(Intent(this,NavigationMenuActivity::class.java))//Cambar por main
+                finish()
             }else{
                 val dialog = MessageDialog(this,TypeMessage.WARNING, "No se ha podido acceder.\nRevisa tu correo y/o contraseña")
                 dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
