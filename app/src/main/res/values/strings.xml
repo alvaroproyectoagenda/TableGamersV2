@@ -40,4 +40,6 @@
     <string name="profile_reequest_pass">Reestrablecer Contraseña</string>
     <string name="profile_save">Guardar</string>
     <string name="profile_mydata">Mi datos</string>
+    <string name="dialog_select_avatar">Selecciona un avatar</string>
+    <string name="btn_selecction">Seleccionar</string>
 </resources>

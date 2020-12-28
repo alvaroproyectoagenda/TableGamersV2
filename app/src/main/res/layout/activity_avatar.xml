@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.AvatarActivity">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btn_dialog_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_dialog_avatar1"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_weight="1"
+                android:tag="avatar1.png"
+                android:onClick="clickAvatarSelected"
+                app:srcCompat="@drawable/avatar1" />
+
+            <ImageView
+                android:id="@+id/iv_dialog_avatar2"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:layout_weight="1"
+                android:tag="avatar2.png"
+                android:onClick="clickAvatarSelected"
+                app:srcCompat="@drawable/avatar2" />
+
+            <ImageView
+                android:id="@+id/iv_dialog_avatar3"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_weight="1"
+                android:onClick="clickAvatarSelected"
+                android:tag="avatar3.png"
+                app:srcCompat="@drawable/avatar3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_dialog_avatar4"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_weight="1"
+                android:tag="avatar4.png"
+
+                android:onClick="clickAvatarSelected"
+                app:srcCompat="@drawable/avatar4" />
+
+            <ImageView
+                android:id="@+id/iv_dialog_avatar5"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:layout_weight="1"
+
+                android:onClick="clickAvatarSelected"
+                android:tag="avatar5.png"
+                app:srcCompat="@drawable/avatar5" />
+
+            <ImageView
+                android:id="@+id/iv_dialog_avatar6"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_weight="1"
+
+                android:onClick="clickAvatarSelected"
+                android:tag="avatar6.png"
+                app:srcCompat="@drawable/avatar6" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_dialog_avatar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:enabled="false"
+        android:text="@string/btn_selecction"
+        android:onClick="clickSaveAvatar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/titleDialogAvatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/dialog_select_avatar"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textColor="@color/grey_800"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

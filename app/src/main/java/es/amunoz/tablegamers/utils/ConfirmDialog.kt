@@ -34,7 +34,7 @@ class ConfirmDialog(): DialogFragment()   {
             requireContext().startActivity(intent)
 
         }
-        v.findViewById<TextView>(R.id.titleMessageConfirm).text = "¿Estás seguro de cerrar sesion?"
+        v.findViewById<TextView>(R.id.titleDialogAvatar).text = "¿Estás seguro de cerrar sesion?"
 
         return v
     }

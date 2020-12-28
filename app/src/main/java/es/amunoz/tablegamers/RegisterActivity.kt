@@ -1,5 +1,6 @@
 package es.amunoz.tablegamers
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -49,10 +50,12 @@ class RegisterActivity : AppCompatActivity(), StructViewData {
         viewModel.isAddUser.observe(this, Observer { isAddUser ->
             if (isAddUser) {
 
-                var dialog = MessageDialog(this,TypeMessage.SUCCESS, "¡Modificado con éxito!")
+                var dialog = MessageDialog(this,TypeMessage.SUCCESS, "¡Registrado con éxito!")
                 dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
                     override fun onClickOKButton() {
-                        //Go to main
+
+                        startActivity(Intent(applicationContext,RegisterActivity::class.java))
+                        finish()
                     }
                 })
 
@@ -130,6 +133,7 @@ class RegisterActivity : AppCompatActivity(), StructViewData {
              id = idVal
              name = nameVal
              email = emailVal
+             avatar = Constants.PATH_STORAGE_DEFAULT_AVATAR
              nickname = nicknameVal
              phone = phoneVal
 

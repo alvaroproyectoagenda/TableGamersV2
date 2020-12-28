@@ -37,8 +37,8 @@ class ProfileFragment : Fragment(), StructViewData {
             myContainer = container
         }
 
-        initViewModel()
         initBinding()
+        initViewModel()
 
         return binding.root
 
@@ -68,11 +68,12 @@ class ProfileFragment : Fragment(), StructViewData {
                 binding.tietProfNickname.setText(user.nickname)
 
                 if (user.avatar != null) {
-                    MethodUtil.loadAvatarImage(
-                        user.avatar!!,
-                        requireContext(),
-                        binding.profileAvatar
-                    )
+//                    MethodUtil.loadAvatarImage(
+//                        user.avatar!!,
+//                        requireContext(),
+//                        binding.profileAvatar
+//                    )
+                    MethodUtil.setAvatarImage(user.avatar!!, requireContext(),binding.profileAvatar)
                 }
 
                 myUser = user

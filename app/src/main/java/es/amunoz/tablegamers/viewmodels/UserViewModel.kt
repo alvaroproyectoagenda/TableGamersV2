@@ -20,10 +20,12 @@ class UserViewModel: ViewModel() {
 
 
     val isAddUser: MutableLiveData<Boolean> =  MutableLiveData()
+    val isAvatarUpdate: MutableLiveData<Boolean> =  MutableLiveData()
     val existNickname: MutableLiveData<Boolean> =  MutableLiveData()
     val emailForgotSend: MutableLiveData<Boolean> =  MutableLiveData()
     val firebaseUser: MutableLiveData<FirebaseUser> =  MutableLiveData()
     val messageExceptionRegisterUser: MutableLiveData<String> =  MutableLiveData()
+    val messageException: MutableLiveData<String> =  MutableLiveData()
     val user: MutableLiveData<User> =  MutableLiveData()
 
 
@@ -147,6 +149,28 @@ class UserViewModel: ViewModel() {
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 emailForgotSend.value = task.isSuccessful
+            }
+
+
+    }
+    /**
+     * Actualizamos el avatar del usuario
+     * @return True o False en función de si se ha insertado correctamenteo no.
+     * @param[user] Objeto de tipo User que vamos a insertar
+     */
+    fun updateAvatarUser(
+        idUser: String,
+        avatar: String
+    ) {
+
+
+        firestore.collection("users").document(idUser).update("avatar",avatar)
+            .addOnSuccessListener {
+                isAvatarUpdate.value = true
+            }
+            .addOnFailureListener {
+                isAvatarUpdate.value = false
+                messageException.value = "No se ha podido actualizar el avatar"
             }
 
 
