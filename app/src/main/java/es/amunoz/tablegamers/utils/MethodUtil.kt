@@ -26,7 +26,7 @@ class MethodUtil {
         }
 
 
-         fun loadAvatarImage(avatar: String, context: Context, imageView: ImageView){
+         fun loadImageFromStorage(avatar: String, context: Context, imageView: ImageView){
             FirebaseStorage.getInstance().getReferenceFromUrl(avatar).downloadUrl.addOnCompleteListener {
                     task ->
                 if (task.isSuccessful){

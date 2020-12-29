@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import es.amunoz.tablegamers.NavigationMenuActivity
 import es.amunoz.tablegamers.R
 import es.amunoz.tablegamers.adapters.AdsAdapter
+import es.amunoz.tablegamers.adapters.AdsListener
 import es.amunoz.tablegamers.databinding.FragmentAdBinding
 import es.amunoz.tablegamers.utils.Constants
 import es.amunoz.tablegamers.utils.StructViewData
@@ -28,10 +30,8 @@ class AdFragment : Fragment(), StructViewData {
     private lateinit var myInflater: LayoutInflater
     private lateinit var myContainer: ViewGroup
     private lateinit var binding: FragmentAdBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private lateinit var adsAdapter: AdsAdapter
 
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,40 +48,31 @@ class AdFragment : Fragment(), StructViewData {
         return binding.root
 
     }
-
     companion object {
 
-
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AdFragment().apply {
-
-            }
+        fun newInstance() =
+            AdFragment().apply {}
     }
 
     override fun initViewModel() {
         viewModel = ViewModelProvider(this).get(AdViewModel::class.java)
-
         viewModel.callAds()
-
-        val adsAdapter = AdsAdapter()
-        binding.rvAds.adapter = adsAdapter
         viewModel.listAds.observe(viewLifecycleOwner,{
             it?.let {
                 adsAdapter.submitList(it)
                 Log.i("cambios","cambios")
             }
-
         })
-
-
-
-
     }
 
     override fun initBinding() {
         binding = DataBindingUtil.inflate(
             myInflater, R.layout.fragment_ad, myContainer, false
         )
+        adsAdapter = AdsAdapter(AdsListener { ad ->
+            requireContext().startActivity(Intent(context,AdDetailActivity::class.java))//Cambar por main
+        })
+        binding.rvAds.adapter = adsAdapter
     }
 }

@@ -1,6 +1,8 @@
 package es.amunoz.tablegamers.adapters
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import es.amunoz.tablegamers.R
 import es.amunoz.tablegamers.databinding.ItemAdBinding
 import es.amunoz.tablegamers.models.Ad
+import es.amunoz.tablegamers.utils.MethodUtil
 
-class AdsAdapter: ListAdapter<Ad, AdsAdapter.ViewHolder>(AdsDiffCallback()) {
+class AdsAdapter(val clickListener: AdsListener): ListAdapter<Ad, AdsAdapter.ViewHolder>(AdsDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,9 +29,12 @@ class AdsAdapter: ListAdapter<Ad, AdsAdapter.ViewHolder>(AdsDiffCallback()) {
 
     class ViewHolder private constructor(val binding: ItemAdBinding) : RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: Ad) {
-           binding.itemTvPrice.text = item.price.toString()
+
+        fun bind(item: Ad, clickListener: AdsListener) {
+
            binding.itemTvTitle.text = item.title
+           binding.ad = item
+            binding.clickListener = clickListener
            binding.executePendingBindings()
 
 
@@ -56,4 +62,8 @@ class AdsDiffCallback : DiffUtil.ItemCallback<Ad>() {
     }
 
 
+}
+
+class AdsListener(val clickListener: (item: Ad) -> Unit) {
+    fun onClick(item: Ad) = clickListener(item)
 }
