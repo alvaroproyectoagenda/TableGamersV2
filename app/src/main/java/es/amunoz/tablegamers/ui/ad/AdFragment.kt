@@ -71,7 +71,9 @@ class AdFragment : Fragment(), StructViewData {
             myInflater, R.layout.fragment_ad, myContainer, false
         )
         adsAdapter = AdsAdapter(AdsListener { ad ->
-            requireContext().startActivity(Intent(context,AdDetailActivity::class.java))//Cambar por main
+           var intent = Intent(context,AdDetailActivity::class.java)
+            intent.putExtra(Constants.EXTRA_ID_AD, ad.id )
+            requireContext().startActivity(intent)//Cambar por main
         })
         binding.rvAds.adapter = adsAdapter
     }

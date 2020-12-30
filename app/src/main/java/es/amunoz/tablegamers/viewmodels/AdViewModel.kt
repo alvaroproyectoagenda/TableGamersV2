@@ -1,5 +1,6 @@
 package es.amunoz.tablegamers.viewmodels
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,8 @@ class AdViewModel: ViewModel() {
 
 
     val listAds: MutableLiveData<List<Ad>> =  MutableLiveData()
+    val myAd: MutableLiveData<Ad> =  MutableLiveData()
+    val messageException: MutableLiveData<String> =  MutableLiveData()
 
 
     init {
@@ -46,7 +49,24 @@ class AdViewModel: ViewModel() {
                 Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
             }
     }
-    fun getAds(): MutableLiveData<List<Ad>> {
-        return this.listAds
+    /**
+     * Obtenemos los anuncios de la base de datos
+     *
+     */
+    fun getAdByID(
+        idAd: String
+    ) {
+
+        firestore.collection("ads").document(idAd).get()
+            .addOnSuccessListener { document ->
+                myAd.value = document.toObject(Ad::class.java)
+            }
+            .addOnFailureListener { exception ->
+                myAd.value = null
+                messageException.value = exception.message
+                Log.i("err",exception.message)
+            }
     }
+
+
 }

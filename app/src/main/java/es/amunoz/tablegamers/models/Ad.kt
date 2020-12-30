@@ -13,6 +13,4 @@ data class Ad (
     var province: String="",
     var state: String="",
     var title: String=""
-        ){
-
-}
+        )

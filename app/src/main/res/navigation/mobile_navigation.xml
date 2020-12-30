@@ -40,4 +40,5 @@
         android:id="@+id/nav_logout"
         android:name="es.amunoz.tablegamers.utils.ConfirmDialog"
         tools:layout="@layout/dialog_confirm" />
+
 </navigation>

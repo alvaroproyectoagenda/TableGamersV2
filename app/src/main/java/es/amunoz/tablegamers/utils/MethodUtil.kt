@@ -1,19 +1,21 @@
 package es.amunoz.tablegamers.utils
 
+import android.R.attr
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Dialog
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.*
-import androidx.appcompat.widget.AppCompatButton
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.firebase.Timestamp
 import com.google.firebase.storage.FirebaseStorage
 import es.amunoz.tablegamers.R
+import java.text.SimpleDateFormat
 import java.util.*
+
 
 class MethodUtil {
     companion object {
@@ -25,25 +27,69 @@ class MethodUtil {
             return UUID.randomUUID().toString()
         }
 
+        fun getInfoState(state: String, context: Context): Int{
+            when(state){
+                Constants.STATES_ARRAY[0] -> {
+                    return context.resources.getColor(
+                        R.color.green_500, context.theme
+                    )
+                }
+                Constants.STATES_ARRAY[1] -> {
+                    return context.resources.getColor(
+                        R.color.amber_700, context.theme
+                    )
+                }
+                Constants.STATES_ARRAY[2] -> {
+                    return context.resources.getColor(
+                        R.color.red_500, context.theme
+                    )
+                }
+            }
 
-         fun loadImageFromStorage(avatar: String, context: Context, imageView: ImageView){
-            FirebaseStorage.getInstance().getReferenceFromUrl(avatar).downloadUrl.addOnCompleteListener {
-                    task ->
+            return context.resources.getColor(R.color.white, context.theme)
+        }
+
+        fun getDateToString(date: Timestamp): String{
+            val sfd = SimpleDateFormat("dd/MM/yyyy")
+            return sfd.format(date.toDate())
+        }
+
+        fun loadImageFromStorage(avatar: String, context: Context, imageView: ImageView){
+
+            FirebaseStorage.getInstance().getReferenceFromUrl(avatar).downloadUrl.addOnCompleteListener { task ->
                 if (task.isSuccessful){
                     Glide.with(context).load(task.result).into(imageView)
                 }
             }
         }
         @SuppressLint("UseCompatLoadingForDrawables")
-        fun getDrawableAvatar(tag: String, context: Context,): Drawable? {
+        fun getDrawableAvatar(tag: String, context: Context): Drawable? {
 
             when(tag){
-                "avatar1.png" -> return context.resources.getDrawable(R.drawable.avatar1, context.theme)
-                "avatar2.png" -> return context.resources.getDrawable(R.drawable.avatar2, context.theme)
-                "avatar3.png" -> return context.resources.getDrawable(R.drawable.avatar3, context.theme)
-                "avatar4.png" -> return context.resources.getDrawable(R.drawable.avatar4, context.theme)
-                "avatar5.png" -> return context.resources.getDrawable(R.drawable.avatar5, context.theme)
-                "avatar6.png" -> return context.resources.getDrawable(R.drawable.avatar6, context.theme)
+                "avatar1.png" -> return context.resources.getDrawable(
+                    R.drawable.avatar1,
+                    context.theme
+                )
+                "avatar2.png" -> return context.resources.getDrawable(
+                    R.drawable.avatar2,
+                    context.theme
+                )
+                "avatar3.png" -> return context.resources.getDrawable(
+                    R.drawable.avatar3,
+                    context.theme
+                )
+                "avatar4.png" -> return context.resources.getDrawable(
+                    R.drawable.avatar4,
+                    context.theme
+                )
+                "avatar5.png" -> return context.resources.getDrawable(
+                    R.drawable.avatar5,
+                    context.theme
+                )
+                "avatar6.png" -> return context.resources.getDrawable(
+                    R.drawable.avatar6,
+                    context.theme
+                )
 
             }
         return null
