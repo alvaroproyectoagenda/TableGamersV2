@@ -48,6 +48,12 @@ class AdFragment : Fragment(), StructViewData {
         return binding.root
 
     }
+
+    override fun onStart() {
+        super.onStart()
+        initViewModel()
+    }
+
     companion object {
 
         @JvmStatic
@@ -58,10 +64,10 @@ class AdFragment : Fragment(), StructViewData {
     override fun initViewModel() {
         viewModel = ViewModelProvider(this).get(AdViewModel::class.java)
         viewModel.callAds()
-        viewModel.listAds.observe(viewLifecycleOwner,{
+        viewModel.listAds.observe(viewLifecycleOwner, {
             it?.let {
                 adsAdapter.submitList(it)
-                Log.i("cambios","cambios")
+                Log.i("cambios", "cambios")
             }
         })
     }
@@ -71,10 +77,14 @@ class AdFragment : Fragment(), StructViewData {
             myInflater, R.layout.fragment_ad, myContainer, false
         )
         adsAdapter = AdsAdapter(AdsListener { ad ->
-           var intent = Intent(context,AdDetailActivity::class.java)
-            intent.putExtra(Constants.EXTRA_ID_AD, ad.id )
+            var intent = Intent(context, AdDetailActivity::class.java)
+            intent.putExtra(Constants.EXTRA_ID_AD, ad.id)
             requireContext().startActivity(intent)//Cambar por main
         })
         binding.rvAds.adapter = adsAdapter
+        binding.floatingActionButton.setOnClickListener {
+            startActivity(Intent(context, FormAdActivity::class.java))
+        }
     }
+
 }

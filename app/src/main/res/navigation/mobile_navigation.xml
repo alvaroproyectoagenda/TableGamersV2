@@ -15,7 +15,12 @@
         android:id="@+id/nav_myad"
         android:name="es.amunoz.tablegamers.ui.ad.AdFragment"
         android:label="@string/menu_myad"
-        tools:layout="@layout/fragment_ad" />
+        tools:layout="@layout/fragment_ad">
+        <argument
+            android:name="nav_arg_myad"
+            app:argType="string"
+            android:defaultValue=""/>
+    </fragment>
 
 
     <fragment

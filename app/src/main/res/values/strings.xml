@@ -46,4 +46,27 @@
     <string name="lorem_ipsum_long">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
     <string name="chat">Enviar mensaje</string>
     <string name="ver_telefono">Contactar</string>
+    <string name="resource_titulo">Titulo</string>
+    <string name="nuevo">Nuevo</string>
+    <string name="poco_usado">Poco usado</string>
+    <string name="antiguo">Antiguo</string>
+    <string name="precio">Precio</string>
+    <string name="descripcion">Descripcion</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="guardar">Guardar</string>
+
+
+    <string-array name="poblaciones">
+        <item>Poblacion1</item>
+        <item>Poblacion2</item>
+        <item>Poblacion3</item>
+        <item>Poblacion4</item>
+    </string-array>
+
+    <string-array name="provincias">
+        <item>Provincia1</item>
+        <item>Provincia2</item>
+        <item>Provincia3</item>
+        <item>Provincia4</item>
+    </string-array>
 </resources>

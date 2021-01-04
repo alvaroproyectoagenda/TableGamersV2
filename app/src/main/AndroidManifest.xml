@@ -9,8 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppStyle">
-        <activity android:name=".ui.ad.AdDetailActivity"
-            android:parentActivityName=".NavigationMenuActivity"/>
+        <activity android:name=".ui.ad.FormAdActivity"></activity>
+        <activity
+            android:name=".ui.ad.AdDetailActivity"
+            android:parentActivityName=".NavigationMenuActivity" />
         <activity
             android:name=".ui.profile.AvatarActivity"
             android:parentActivityName=".NavigationMenuActivity" />

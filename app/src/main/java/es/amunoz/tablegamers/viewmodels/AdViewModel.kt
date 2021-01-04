@@ -19,7 +19,9 @@ class AdViewModel: ViewModel() {
 
     val listAds: MutableLiveData<List<Ad>> =  MutableLiveData()
     val myAd: MutableLiveData<Ad> =  MutableLiveData()
-    val messageException: MutableLiveData<String> =  MutableLiveData()
+    val isAddAd: MutableLiveData<Boolean> =  MutableLiveData()
+    val isUploadImages: MutableLiveData<Boolean> =  MutableLiveData()
+      val messageException: MutableLiveData<String> =  MutableLiveData()
 
 
     init {
@@ -67,6 +69,26 @@ class AdViewModel: ViewModel() {
                 Log.i("err",exception.message)
             }
     }
+    /**
+     * Guardamos el anuncio en bd
+     *
+     */
+    fun saveAd(
+        ad: Ad
+    ) {
+
+        firestore.collection("ads").document(ad.id).set(ad)
+            .addOnSuccessListener {
+                isAddAd.value = true
+            }
+            .addOnFailureListener {
+                isAddAd.value = false
+                messageException.value = "Error al registrar el usuario"
+            }
+    }
+
+
+
 
 
 }

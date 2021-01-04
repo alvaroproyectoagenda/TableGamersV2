@@ -20,6 +20,9 @@ class ValidatorUtil {
             }
 
         }
+        fun isNumber(str: String): Boolean{
+            return !TextUtils.isDigitsOnly(str) || str == ""
+        }
         fun isPhone(str: String): Boolean{
             return if (!isEmpty(str)){
                 Patterns.PHONE.matcher(str).matches();

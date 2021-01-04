@@ -46,7 +46,13 @@ class AdDetailActivity : AppCompatActivity(), StructViewData {
             viewModel.myAd.observe(this, {
 
                 myAd = it
-                listImagesStorage = it.images
+                listImagesStorage = if(it.images.isEmpty()){
+                    arrayListOf<String>(Constants.NOT_FOUND_IMAGE_AD)
+                }else{
+                    it.images
+                }
+
+
                 initBinding()
                 initSliderImage()
             })

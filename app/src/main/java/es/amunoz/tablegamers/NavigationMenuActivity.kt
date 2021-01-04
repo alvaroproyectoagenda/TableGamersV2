@@ -70,7 +70,9 @@ class NavigationMenuActivity : AppCompatActivity(){
         
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_ad, R.id.nav_myad, R.id.nav_event, R.id.nav_invitation, R.id.nav_profile, R.id.nav_logout
+                R.id.nav_ad,
+                R.id.nav_myad,
+                R.id.nav_event, R.id.nav_invitation, R.id.nav_profile, R.id.nav_logout
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
