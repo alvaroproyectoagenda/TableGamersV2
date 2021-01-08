@@ -15,8 +15,11 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavArgs
+import androidx.navigation.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import es.amunoz.tablegamers.ui.profile.AvatarActivity
 import es.amunoz.tablegamers.utils.MethodUtil
@@ -67,16 +70,18 @@ class NavigationMenuActivity : AppCompatActivity(){
     }
     private fun initNavigation(){
         val navController = findNavController(R.id.nav_host_fragment)
-        
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_ad,
-                R.id.nav_myad,
+                 R.id.nav_myad,
                 R.id.nav_event, R.id.nav_invitation, R.id.nav_profile, R.id.nav_logout
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
     }
 
     private fun initViewModel(){

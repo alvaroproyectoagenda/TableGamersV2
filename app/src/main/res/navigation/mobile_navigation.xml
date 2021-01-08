@@ -17,7 +17,7 @@
         android:label="@string/menu_myad"
         tools:layout="@layout/fragment_ad">
         <argument
-            android:name="nav_arg_myad"
+            android:name="navUserIdArgument"
             app:argType="string"
             android:defaultValue=""/>
     </fragment>

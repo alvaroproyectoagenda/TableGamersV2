@@ -69,4 +69,10 @@
         <item>Provincia3</item>
         <item>Provincia4</item>
     </string-array>
+
+    <string-array name="states">
+        <item>Nuevo</item>
+        <item>Poco usado</item>
+        <item>Antiguo</item>
+    </string-array>
 </resources>

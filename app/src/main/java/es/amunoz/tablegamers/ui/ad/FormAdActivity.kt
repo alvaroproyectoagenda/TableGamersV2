@@ -2,6 +2,7 @@ package es.amunoz.tablegamers.ui.ad
 
 import android.content.ClipData
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -10,6 +11,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import es.amunoz.tablegamers.R
@@ -93,7 +95,7 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
         var idVal = MethodUtil.generateID()
         var titleVal = binding.tietFadTitle.text.toString()
         var priceVal = binding.tietFadPrice.text.toString()
-        var stateVal = "Nuevo"
+        var stateVal = binding.spFadState.selectedItem.toString()
         var poblationVal = binding.spFadPoblation.selectedItem.toString()
         var provinceVal =  binding.spFadProvince.selectedItem.toString()
         var descriptionVal = binding.tietFadDescription.text.toString()
@@ -217,4 +219,6 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
     fun clickSaveFormAd(view: View) {
         createNewAd()
     }
+
+
 }

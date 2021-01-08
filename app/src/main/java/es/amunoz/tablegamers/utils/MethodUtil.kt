@@ -5,11 +5,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.widget.*
+import androidx.databinding.adapters.Converters
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.chip.Chip
 import com.google.firebase.Timestamp
 import com.google.firebase.storage.FirebaseStorage
 import es.amunoz.tablegamers.R
@@ -101,5 +104,38 @@ class MethodUtil {
 
         }
 
+
+        @SuppressLint("ResourceType")
+        fun setColorChip(type: String, chip: Chip, context: Context){
+            when(type){
+                context.resources.getString(R.string.nuevo) -> {
+                    if(!chip.isChecked){
+                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(getInfoState(type,context))
+                        chip.setTextColor(Color.WHITE)
+                    }else{
+                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(R.color.grey_300)
+                        chip.setTextColor(Color.BLACK)
+                    }
+                }
+                context.resources.getString(R.string.poco_usado) -> {
+                    if(!chip.isChecked){
+                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(getInfoState(type,context))
+                        chip.setTextColor(Color.WHITE)
+                    }else{
+                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(R.color.grey_300)
+                        chip.setTextColor(Color.BLACK)
+                    }
+                }
+                context.resources.getString(R.string.antiguo) -> {
+                    if(!chip.isChecked){
+                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(getInfoState(type,context))
+                        chip.setTextColor(Color.WHITE)
+                    }else{
+                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(R.color.grey_300)
+                        chip.setTextColor(Color.BLACK)
+                    }
+                }
+            }
+        }
     }
 }
