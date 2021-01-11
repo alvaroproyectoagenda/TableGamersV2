@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavArgs
 import androidx.navigation.navArgs
 import com.google.firebase.auth.FirebaseAuth
+import es.amunoz.tablegamers.ui.ad.AdFragment
+import es.amunoz.tablegamers.ui.ad.AdFragmentArgs
 import es.amunoz.tablegamers.ui.profile.AvatarActivity
 import es.amunoz.tablegamers.utils.MethodUtil
 import es.amunoz.tablegamers.viewmodels.UserViewModel
@@ -70,6 +72,8 @@ class NavigationMenuActivity : AppCompatActivity(){
     }
     private fun initNavigation(){
         val navController = findNavController(R.id.nav_host_fragment)
+        //val args: AdFragmentArgs by navArgs()
+       // val action = AdFragmentDirections.actionMyAd(true)
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -80,6 +84,7 @@ class NavigationMenuActivity : AppCompatActivity(){
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
 
 
     }

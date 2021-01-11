@@ -20,7 +20,7 @@ class AdViewModel: ViewModel() {
     val listAds: MutableLiveData<List<Ad>> =  MutableLiveData()
     val myAd: MutableLiveData<Ad> =  MutableLiveData()
     val isAddAd: MutableLiveData<Boolean> =  MutableLiveData()
-    val isUploadImages: MutableLiveData<Boolean> =  MutableLiveData()
+    val isDeleteAd: MutableLiveData<Boolean> =  MutableLiveData()
       val messageException: MutableLiveData<String> =  MutableLiveData()
 
 
@@ -52,6 +52,29 @@ class AdViewModel: ViewModel() {
             }
     }
     /**
+     * Obtenemos los anuncios de la base de datos del usuario
+     *
+     */
+    fun callAdsUser(
+    idUser: String
+    ) {
+
+        firestore.collection("ads").whereEqualTo("create_for",idUser).get()
+            .addOnSuccessListener { documents ->
+                var adsListTemp = arrayListOf<Ad>()
+                for (document in documents) {
+                    var ad = document.toObject(Ad::class.java)
+                    adsListTemp.add(ad)
+                }
+                listAds.value = adsListTemp
+
+            }
+            .addOnFailureListener { exception ->
+                listAds.value = null
+                Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
+            }
+    }
+    /**
      * Obtenemos los anuncios de la base de datos
      *
      */
@@ -65,6 +88,24 @@ class AdViewModel: ViewModel() {
             }
             .addOnFailureListener { exception ->
                 myAd.value = null
+                messageException.value = exception.message
+                Log.i("err",exception.message)
+            }
+    }
+    /**
+     * Borramos anuncio
+     *
+     */
+    fun deleteAd(
+        idAd: String
+    ) {
+
+        firestore.collection("ads").document(idAd).delete()
+            .addOnSuccessListener {
+                isDeleteAd.value = true
+            }
+            .addOnFailureListener { exception ->
+                isDeleteAd.value = false
                 messageException.value = exception.message
                 Log.i("err",exception.message)
             }

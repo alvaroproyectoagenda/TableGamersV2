@@ -93,7 +93,9 @@
                                 android:id="@+id/btn_fad_delete"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:backgroundTint="@color/red_500"
+                                android:onClick="clickDeleteAd"
                                 android:text="@string/eliminar" />
 
 

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -25,13 +26,16 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
     private lateinit var binding: ActivityFormAdBinding
     private lateinit var viewModel: AdViewModel
     private var storageReference = FirebaseStorage.getInstance().reference
-    private var isCreate = true
     private var currentUser = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private var listOfPath = arrayListOf<Uri>()
+    //var of update
+    private var isCreate = true
+    private lateinit var idAd: String
+    private lateinit var myAd: Ad
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initBinding()
+
         initViewModel()
     }
 
@@ -45,6 +49,21 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
 
     override fun initViewModel() {
         viewModel = ViewModelProvider(this).get(AdViewModel::class.java)
+        //Si venimos para modificar/eliminar
+        val bundle = intent.extras
+        if(bundle?.getString(Constants.EXTRA_ID_AD) != null) {
+            isCreate = true
+            idAd = bundle.getString(Constants.EXTRA_ID_AD)!!
+            viewModel.getAdByID(idAd)
+            viewModel.myAd.observe(this, {
+                myAd = it
+                initBinding()
+                binding.btnFadDelete.visibility = View.VISIBLE
+                binding.btnFadForm.text = "Modificar"
+                binding.ad = it
+            })
+        }
+        initBinding()
         viewModel.isAddAd.observe(this, {
             if (it) {
 
@@ -68,16 +87,36 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
                 })
             }
         })
+        viewModel.isDeleteAd.observe(this, {
+            if (it) {
+
+                var dialog = MessageDialog(this, TypeMessage.SUCCESS, "¡Anuncio eliminado con éxito!")
+                dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                    override fun onClickOKButton() {
+                        finish()
+                    }
+                })
+
+            } else {
+                var dialog = MessageDialog(
+                    this,
+                    TypeMessage.WARNING,
+                    viewModel.messageException.value.toString()
+                )
+                dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                    override fun onClickOKButton() {
+
+                    }
+                })
+            }
+        })
+
     }
 
     override fun initBinding() {
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_form_ad)
 
-        if(!isCreate){
-            binding.btnFadDelete.visibility = View.GONE
-            binding.btnFadForm.text = "Modificar"
-        }
     }
 
   private fun showFileChooserImage(){
@@ -212,12 +251,25 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
             })
         }
     }
+    private fun deleteAd(){
+        val dialog = ConfirmDialogDeleteAd(this,  "Estas seguro/a de eliminar este anuncio?")
+        dialog.setOnClickListenerOKButton(object : OnClickListenerConfirmDialogDeleteAd {
+            override fun onClickOKButton() {
+                viewModel.deleteAd(myAd.id)
+
+            }
+        })
+    }
     fun clickUploadImages(view: View) {
         showFileChooserImage()
     }
 
     fun clickSaveFormAd(view: View) {
         createNewAd()
+    }
+
+    fun clickDeleteAd(view: View) {
+        deleteAd()
     }
 
 

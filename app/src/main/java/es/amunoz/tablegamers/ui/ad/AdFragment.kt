@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import es.amunoz.tablegamers.NavigationMenuActivity
 import es.amunoz.tablegamers.R
 import es.amunoz.tablegamers.adapters.AdsAdapter
@@ -31,12 +32,18 @@ class AdFragment : Fragment(), StructViewData {
     private lateinit var myContainer: ViewGroup
     private lateinit var binding: FragmentAdBinding
     private lateinit var adsAdapter: AdsAdapter
+    private var isMyAd: Boolean = false
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val arg = arguments?.getBoolean("argIdUser")
+        Log.i("Args",arg.toString())
+        isMyAd = arg!=null
+
         myInflater = inflater
         if (container != null) {
             myContainer = container
@@ -58,12 +65,18 @@ class AdFragment : Fragment(), StructViewData {
 
         @JvmStatic
         fun newInstance() =
-            AdFragment().apply {}
+            AdFragment().apply {
+
+            }
     }
 
     override fun initViewModel() {
         viewModel = ViewModelProvider(this).get(AdViewModel::class.java)
-        viewModel.callAds()
+        if(isMyAd){
+            viewModel.callAdsUser(FirebaseAuth.getInstance().uid.toString())
+        }else{
+            viewModel.callAds()
+        }
         viewModel.listAds.observe(viewLifecycleOwner, {
             it?.let {
                 adsAdapter.submitList(it)
@@ -78,8 +91,12 @@ class AdFragment : Fragment(), StructViewData {
         )
         adsAdapter = AdsAdapter(AdsListener { ad ->
             var intent = Intent(context, AdDetailActivity::class.java)
+            if(isMyAd){
+                intent = Intent(context, FormAdActivity::class.java)
+            }
             intent.putExtra(Constants.EXTRA_ID_AD, ad.id)
-            requireContext().startActivity(intent)//Cambar por main
+            requireContext().startActivity(intent)
+
         })
         binding.rvAds.adapter = adsAdapter
         binding.floatingActionButton.setOnClickListener {
