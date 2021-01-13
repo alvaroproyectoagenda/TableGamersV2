@@ -1,6 +1,7 @@
 package es.amunoz.tablegamers.utils
 
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources.getColorStateList
 import androidx.databinding.BindingAdapter
@@ -29,4 +30,31 @@ fun Chip.setChipState(item: Ad){
 @BindingAdapter("setDateFormat")
 fun TextView.setDateFormat(item: Ad){
     text = MethodUtil.getDateToString(item.date_creation)
+}
+@BindingAdapter("setItemSpinerState")
+fun Spinner.setItemSpinerState(item: String?){
+
+   if(item!=null){
+    when(tag.toString()) {
+        "state"->{
+            when(item){
+                "Nuevo"-> setSelection(0)
+                "Poco usado" -> setSelection(1)
+                "Antiguo" -> setSelection(2)
+            }
+
+        }
+        "province"->{
+                setSelection(MethodUtil.getPositionOfArrayData("province",item,context))
+
+        }
+        "poblation"->{
+
+                setSelection(MethodUtil.getPositionOfArrayData("poblation", item,context))
+
+
+        }
+    }
+    }
+
 }

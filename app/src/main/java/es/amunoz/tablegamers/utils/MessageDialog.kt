@@ -2,8 +2,6 @@ package es.amunoz.tablegamers.utils
 
 import android.app.Dialog
 import android.content.Context
-import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -75,7 +73,7 @@ class MessageDialog(private var myContext: Context, var type: TypeMessage, var m
             }
         }
         //Mostramos el mensaje
-        (dialog.findViewById<View>(R.id.titleMessage) as TextView).text = message
+        (dialog.findViewById<View>(R.id.tvTitleFilter) as TextView).text = message
 
         //Cargamos todos los elementos y mostramos
         val lp = WindowManager.LayoutParams()

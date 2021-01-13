@@ -32,6 +32,7 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
     private var isCreate = true
     private lateinit var idAd: String
     private lateinit var myAd: Ad
+    private var indexImage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,7 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
         //Si venimos para modificar/eliminar
         val bundle = intent.extras
         if(bundle?.getString(Constants.EXTRA_ID_AD) != null) {
-            isCreate = true
+            isCreate = false
             idAd = bundle.getString(Constants.EXTRA_ID_AD)!!
             viewModel.getAdByID(idAd)
             viewModel.myAd.observe(this, {
@@ -61,6 +62,10 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
                 binding.btnFadDelete.visibility = View.VISIBLE
                 binding.btnFadForm.text = "Modificar"
                 binding.ad = it
+
+                binding.fbFadPhoto.visibility = View.GONE
+                MethodUtil.loadImageFromStorage(it.images[0],this, binding.ivFadHedar)
+
             })
         }
         initBinding()
@@ -110,6 +115,29 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
                 })
             }
         })
+        viewModel.isUpdateAd.observe(this, {
+            if (it) {
+
+                var dialog = MessageDialog(this, TypeMessage.SUCCESS, "¡Anuncio modificado con éxito!")
+                dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                    override fun onClickOKButton() {
+                        finish()
+                    }
+                })
+
+            } else {
+                var dialog = MessageDialog(
+                    this,
+                    TypeMessage.WARNING,
+                    viewModel.messageException.value.toString()
+                )
+                dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                    override fun onClickOKButton() {
+
+                    }
+                })
+            }
+        })
 
     }
 
@@ -117,6 +145,9 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_form_ad)
 
+        if(isCreate){
+            binding.ad = null
+        }
     }
 
   private fun showFileChooserImage(){
@@ -129,7 +160,6 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
           Constants.PICK_IMAGE_REQUEST
       )
   }
-
     private fun createNewAd(){
         var idVal = MethodUtil.generateID()
         var titleVal = binding.tietFadTitle.text.toString()
@@ -190,7 +220,68 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
            saveAd(ad)
         }
     }
+    private fun updateAd(){
+        var idVal = myAd.id
+        var titleVal = binding.tietFadTitle.text.toString()
+        var priceVal = binding.tietFadPrice.text.toString()
+        var stateVal = binding.spFadState.selectedItem.toString()
+        var poblationVal = binding.spFadPoblation.selectedItem.toString()
+        var provinceVal =  binding.spFadProvince.selectedItem.toString()
+        var descriptionVal = binding.tietFadDescription.text.toString()
 
+
+        val validateField: MutableList<String> = mutableListOf()
+        var validate = true
+        if (ValidatorUtil.isEmpty(titleVal)   ){
+            validateField.add("Titulo")
+            validate = false
+        }
+        if (ValidatorUtil.isEmpty(priceVal) && !ValidatorUtil.isNumber(priceVal)   ){
+            validateField.add("Precio")
+            validate = false
+        }
+        if (ValidatorUtil.isEmpty(stateVal)   ){
+            validateField.add("Estado")
+            validate = false
+        }
+        if (ValidatorUtil.isEmpty(poblationVal) || ValidatorUtil.isEmpty(provinceVal)   ){
+            validateField.add("Población y/o Provincia")
+            validate = false
+        }
+        if (ValidatorUtil.isEmpty(descriptionVal) ){
+            validateField.add("Descripcion")
+            validate = false
+        }
+
+        if(!validate){
+            val info = validateField.joinToString("\n")
+            val dialog = MessageDialog(this, TypeMessage.INFO, "Revisa los campos:\n" + info)
+            dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                override fun onClickOKButton() {
+                    validateField.removeAll(validateField)
+                    validate = true
+                }
+            })
+        } else {
+
+
+            var ad = Ad().apply {
+                id = idVal
+                create_for = currentUser
+                description = descriptionVal
+                poblation = poblationVal
+                price = Integer.valueOf(priceVal)
+                province = provinceVal
+                state = stateVal
+                title = titleVal
+                images = myAd.images
+                date_creation = myAd.date_creation
+
+
+            }
+            viewModel.updateAd(ad)
+        }
+    }
     private fun generateFilePath(intent: Intent){
 
         if(intent.clipData !=null){
@@ -207,7 +298,6 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
         }
 
     }
-
     private fun showPreviewImage(uri: Uri){
         val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
         binding.ivFadHedar.setImageBitmap(bitmap)
@@ -265,7 +355,11 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
     }
 
     fun clickSaveFormAd(view: View) {
-        createNewAd()
+        if(isCreate){
+            createNewAd()
+        }else{
+            updateAd()
+        }
     }
 
     fun clickDeleteAd(view: View) {

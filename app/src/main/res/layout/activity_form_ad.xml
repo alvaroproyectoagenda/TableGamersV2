@@ -7,7 +7,8 @@
 
         <variable
             name="ad"
-            type="es.amunoz.tablegamers.models.Ad" />
+            type="es.amunoz.tablegamers.models.Ad"
+             />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +17,7 @@
 
         android:layout_height="match_parent">
 
+
         <ImageView
             android:id="@+id/iv_fad_hedar"
             android:layout_width="0dp"
@@ -23,6 +25,7 @@
             android:adjustViewBounds="true"
             android:elevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/side_nav_bar" />
@@ -112,7 +115,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/tiet_fad_title"
                                 android:layout_width="match_parent"
-
+                               android:text="@{ad.title}"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/resource_titulo" />
 
@@ -143,6 +146,7 @@
 
                                 android:layout_height="wrap_content"
                                 android:hint="@string/precio"
+                                android:text="@{``+ad.price}"
                                 android:inputType="number" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,7 +165,9 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+android:tag="province"
 
+                            app:setItemSpinerState="@{ad.province}"
                             android:entries="@array/provincias"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -174,7 +180,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:entries="@array/poblaciones"
-
+                            android:tag="poblation"
+                            app:setItemSpinerState="@{ad.poblation}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/sp_fad_province" />
@@ -192,7 +199,7 @@
                                 android:id="@+id/tiet_fad_description"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-
+                    android:text="@{ad.description}"
                                 android:hint="@string/descripcion"
                                 android:inputType="textMultiLine" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -204,6 +211,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:entries="@array/states"
+                            android:tag="state"
+                            app:setItemSpinerState="@{ad.state}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -215,6 +224,37 @@
             </LinearLayout>
         </ScrollView>
 
+       <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_fad_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+
+            android:backgroundTint="@color/white"
+            android:clickable="true"
+            app:borderWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_fad_hedar"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toTopOf="@+id/iv_fad_hedar"
+            app:srcCompat="@drawable/ic_arrow_left"
+            app:tint="@color/colorPrimaryDark" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_fad_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/white"
+            android:clickable="true"
+            app:borderWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_fad_hedar"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_fad_hedar"
+            app:srcCompat="@drawable/ic_arrow_right"
+            app:tint="@color/colorPrimaryDark" />
+-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -137,5 +137,27 @@ class MethodUtil {
                 }
             }
         }
+
+
+        fun getPositionOfArrayData(type: String, value: String,    context: Context): Int{
+            when(type){
+                "poblation"->{
+                    val arr =context.resources.getStringArray(R.array.poblaciones)
+                    return arr.indexOf(value)
+                }
+                "province"->{
+                    val arr =context.resources.getStringArray(R.array.provincias)
+                    return arr.indexOf(value)
+                }
+                "state"->{
+                    val arr =context.resources.getStringArray(R.array.states)
+                    return arr.indexOf(value)
+                }
+            }
+
+            return -1
+        }
     }
+
+
 }
