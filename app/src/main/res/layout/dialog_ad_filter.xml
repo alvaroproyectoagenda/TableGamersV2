@@ -17,8 +17,16 @@
         android:padding="10dp">
 
 
-
-
+        <TextView
+            android:id="@+id/tvTitleFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="16dp"
+            android:text="Filtros"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/grey_800" />
     </LinearLayout>
 
     <LinearLayout
@@ -28,28 +36,24 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <TextView
-            android:id="@+id/tvTitleFilter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="16dp"
-            android:text="Buscar por:"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="@color/grey_800" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_filter_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiet_filter_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/resource_titulo" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/resource_titulo" />
+
+        <EditText
+            android:id="@+id/et_filter_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+             />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_filter_"
@@ -61,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="@string/precio" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -70,7 +74,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextNumber2"
+                android:id="@+id/et_filter_price_1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -78,7 +82,7 @@
                 android:inputType="number" />
 
             <EditText
-                android:id="@+id/editTextNumber"
+                android:id="@+id/et_filter_price_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -90,18 +94,39 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="Provincia" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/sp_filter_province"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
+            android:entries="@array/provincias"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:id="@+id/tv_filter_validation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/red_500"
+            android:textAlignment="center"
+            android:visibility="gone"
+              />
+
         <Button
-            android:id="@+id/btnClose"
+            android:id="@+id/btn_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dialog_btn_ok" />
+        <Button
+            android:id="@+id/btn_filter_clear"
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+
+            android:layout_height="wrap_content"
+            android:text="Borrar filtros" />
+
+
     </LinearLayout>
 
 

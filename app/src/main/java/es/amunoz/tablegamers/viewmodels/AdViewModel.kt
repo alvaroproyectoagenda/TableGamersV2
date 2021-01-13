@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import es.amunoz.tablegamers.models.Ad
 import es.amunoz.tablegamers.models.User
 import es.amunoz.tablegamers.utils.Constants
+import es.amunoz.tablegamers.utils.Filter
 
 class AdViewModel: ViewModel() {
 
@@ -64,6 +65,40 @@ class AdViewModel: ViewModel() {
             .addOnSuccessListener { documents ->
                 var adsListTemp = arrayListOf<Ad>()
                 for (document in documents) {
+                    var ad = document.toObject(Ad::class.java)
+                    adsListTemp.add(ad)
+                }
+                listAds.value = adsListTemp
+
+            }
+            .addOnFailureListener { exception ->
+                listAds.value = null
+                Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
+            }
+    }
+    /**
+     * Obtenemos los anuncios de la base de datos
+     *
+     */
+    fun callAdsFilter(filter: Filter
+
+    ) {
+        var collectionRef  = firestore.collection("ads")
+        var query = collectionRef.whereEqualTo("province",filter.province)
+
+        if(!filter.title.isNullOrBlank()){
+            query = collectionRef.whereEqualTo("title",filter.title)
+        }
+        if(filter.price_since != 0 && filter.price_until == 0){
+            query = collectionRef.whereGreaterThanOrEqualTo("price",filter.price_since!!).whereLessThanOrEqualTo("price", filter.price_until!!)
+        }
+
+
+       query.get()
+            .addOnSuccessListener { documents ->
+                var adsListTemp = arrayListOf<Ad>()
+                for (document in documents) {
+
                     var ad = document.toObject(Ad::class.java)
                     adsListTemp.add(ad)
                 }
