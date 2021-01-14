@@ -24,6 +24,11 @@
 
 
     <fragment
+        android:id="@+id/nav_message"
+        android:name="es.amunoz.tablegamers.ui.message.MessagesFragment"
+        android:label="@string/menu_messages"
+        tools:layout="@layout/fragment_messages" />
+    <fragment
         android:id="@+id/nav_event"
         android:name="es.amunoz.tablegamers.ui.event.EventFragment"
         android:label="@string/menu_event"
