@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="Item3"
+        android:id="@+id/item_event_public"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_public_event"
+        />
+    <item android:title="Item2"
+        android:id="@+id/item_event_go"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_voy_a_ir"
+        />
+
+    <item android:title="Item"
+        android:id="@+id/item_event_myevents"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_my_event"
+        />
+</menu>

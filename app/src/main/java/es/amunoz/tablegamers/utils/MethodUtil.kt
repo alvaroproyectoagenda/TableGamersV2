@@ -1,17 +1,12 @@
 package es.amunoz.tablegamers.utils
 
-import android.R.attr
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.widget.*
 import androidx.databinding.adapters.Converters
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.chip.Chip
 import com.google.firebase.Timestamp
 import com.google.firebase.storage.FirebaseStorage
@@ -29,7 +24,33 @@ class MethodUtil {
         fun generateID(): String{
             return UUID.randomUUID().toString()
         }
+    fun getDayOfDate(date: Date): String{
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.time = date
 
+        return calendar.get(Calendar.DAY_OF_MONTH).toString()
+    }
+        fun getMonthName(date: Date):String{
+            val calendar: Calendar = Calendar.getInstance()
+            calendar.time = date
+
+            when(calendar.get(Calendar.MONTH)+1){
+                1 -> return "Enero"
+                2 -> return "Febrero"
+                3 -> return "Marzo"
+                4 -> return "Abril"
+                5 -> return "Mayo"
+                6 -> return "Junio"
+                7 -> return "Julio"
+                8 -> return "Agosto"
+                9 -> return "Septiembre"
+                10 -> return "Octubre"
+                11 -> return "Noviembre"
+                12 -> return "Diciembre"
+
+            }
+            return  "-";
+        }
         fun getInfoState(state: String, context: Context): Int{
             when(state){
                 Constants.STATES_ARRAY[0] -> {
@@ -109,29 +130,47 @@ class MethodUtil {
         fun setColorChip(type: String, chip: Chip, context: Context){
             when(type){
                 context.resources.getString(R.string.nuevo) -> {
-                    if(!chip.isChecked){
-                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(getInfoState(type,context))
+                    if (!chip.isChecked) {
+                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(
+                            getInfoState(
+                                type,
+                                context
+                            )
+                        )
                         chip.setTextColor(Color.WHITE)
-                    }else{
-                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(R.color.grey_300)
+                    } else {
+                        chip.chipBackgroundColor =
+                            Converters.convertColorToColorStateList(R.color.grey_300)
                         chip.setTextColor(Color.BLACK)
                     }
                 }
                 context.resources.getString(R.string.poco_usado) -> {
-                    if(!chip.isChecked){
-                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(getInfoState(type,context))
+                    if (!chip.isChecked) {
+                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(
+                            getInfoState(
+                                type,
+                                context
+                            )
+                        )
                         chip.setTextColor(Color.WHITE)
-                    }else{
-                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(R.color.grey_300)
+                    } else {
+                        chip.chipBackgroundColor =
+                            Converters.convertColorToColorStateList(R.color.grey_300)
                         chip.setTextColor(Color.BLACK)
                     }
                 }
                 context.resources.getString(R.string.antiguo) -> {
-                    if(!chip.isChecked){
-                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(getInfoState(type,context))
+                    if (!chip.isChecked) {
+                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(
+                            getInfoState(
+                                type,
+                                context
+                            )
+                        )
                         chip.setTextColor(Color.WHITE)
-                    }else{
-                        chip.chipBackgroundColor = Converters.convertColorToColorStateList(R.color.grey_300)
+                    } else {
+                        chip.chipBackgroundColor =
+                            Converters.convertColorToColorStateList(R.color.grey_300)
                         chip.setTextColor(Color.BLACK)
                     }
                 }
@@ -139,18 +178,18 @@ class MethodUtil {
         }
 
 
-        fun getPositionOfArrayData(type: String, value: String,    context: Context): Int{
+        fun getPositionOfArrayData(type: String, value: String, context: Context): Int{
             when(type){
-                "poblation"->{
-                    val arr =context.resources.getStringArray(R.array.poblaciones)
+                "poblation" -> {
+                    val arr = context.resources.getStringArray(R.array.poblaciones)
                     return arr.indexOf(value)
                 }
-                "province"->{
-                    val arr =context.resources.getStringArray(R.array.provincias)
+                "province" -> {
+                    val arr = context.resources.getStringArray(R.array.provincias)
                     return arr.indexOf(value)
                 }
-                "state"->{
-                    val arr =context.resources.getStringArray(R.array.states)
+                "state" -> {
+                    val arr = context.resources.getStringArray(R.array.states)
                     return arr.indexOf(value)
                 }
             }

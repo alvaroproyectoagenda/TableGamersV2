@@ -23,9 +23,8 @@ class AdViewModel: ViewModel() {
     val isAddAd: MutableLiveData<Boolean> =  MutableLiveData()
     val isUpdateAd: MutableLiveData<Boolean> =  MutableLiveData()
     val isDeleteAd: MutableLiveData<Boolean> =  MutableLiveData()
-      val messageException: MutableLiveData<String> =  MutableLiveData()
-
-
+    val messageException: MutableLiveData<String> =  MutableLiveData()
+    
     init {
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
     }

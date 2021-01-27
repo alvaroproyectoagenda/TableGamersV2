@@ -9,9 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppStyle">
-        <activity android:name=".ui.ad.FormAdActivity"
+        <activity android:name=".ui.event.EventDetailActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".NavigationMenuActivity"/>
+
+            ></activity>
+        <activity
+            android:name=".ui.ad.FormAdActivity"
+            android:parentActivityName=".NavigationMenuActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ad.AdDetailActivity"
             android:parentActivityName=".NavigationMenuActivity" />

@@ -1,60 +1,158 @@
-package es.amunoz.tablegamers.ui.event
+package es.amunoz.tablegamers .ui.event
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import es.amunoz.tablegamers.R
+import es.amunoz.tablegamers.adapters.AdsAdapter
+import es.amunoz.tablegamers.adapters.AdsListener
+import es.amunoz.tablegamers.adapters.EventAdapter
+import es.amunoz.tablegamers.adapters.EventListener
+import es.amunoz.tablegamers.databinding.FragmentAdBinding
+import es.amunoz.tablegamers.databinding.FragmentEventBinding
+import es.amunoz.tablegamers.ui.ad.AdDetailActivity
+import es.amunoz.tablegamers.ui.ad.FormAdActivity
+import es.amunoz.tablegamers.utils.*
+import es.amunoz.tablegamers.viewmodels.AdViewModel
+import es.amunoz.tablegamers.viewmodels.EventViewModel
+import kotlinx.android.synthetic.main.app_bar_main.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [EventFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class EventFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class EventFragment : Fragment(), StructViewData {
+    private lateinit var viewModel: EventViewModel
+    private lateinit var myInflater: LayoutInflater
+    private lateinit var myContainer: ViewGroup
+    private lateinit var binding: FragmentEventBinding
+    private lateinit var evtAdapter: EventAdapter
+    private lateinit var typeEvent: TypeFilterEvent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
-
+    override fun onStart() {
+        super.onStart()
+        initViewModel()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event, container, false)
+
+     /*   val arg = arguments?.getBoolean("argIdUser")
+        Log.i("Args",arg.toString())
+        isMyAd = arg!=null
+*/
+        myInflater = inflater
+        if (container != null) {
+            myContainer = container
+        }
+
+        initBinding()
+        initViewModel()
+
+        return binding.root
+
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EventFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             EventFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }
+
+
+    override fun initViewModel() {
+        setHasOptionsMenu(true);
+        typeEvent = TypeFilterEvent.PUBLICEVENTS
+        viewModel = ViewModelProvider(this).get(EventViewModel::class.java)
+        viewModel.callPublicEvent()
+        viewModel.listEvents.observe(viewLifecycleOwner, {
+            it?.let {
+                evtAdapter.submitList(it)
+                Log.i("cambios", "cambios")
+            }
+        })
+    }
+
+    override fun initBinding() {
+        binding = DataBindingUtil.inflate(
+            myInflater, R.layout.fragment_event, myContainer, false
+        )
+        binding.tvEventTitle.text = "Eventos"
+        evtAdapter = EventAdapter(EventListener {
+            when(typeEvent) {
+                TypeFilterEvent.MYEVENTS -> {
+                    val dialog = ConfirmDialogDeleteAd(
+                        requireContext(),
+                        "Estas seguro/a de eliminar este evento?"
+                    )
+                    dialog.setOnClickListenerOKButton(object :
+                        OnClickListenerConfirmDialogDeleteAd {
+                        override fun onClickOKButton() {
+                            Toast.makeText(context, "liminado " + it.title, Toast.LENGTH_SHORT)
+                                .show()
+
+                        }
+                    })
+                }
+                TypeFilterEvent.GOTOEVENTS -> {
+                    //none
+                }
+                TypeFilterEvent.PUBLICEVENTS -> {
+
+                    val intent = Intent(context, EventDetailActivity::class.java)
+                    intent.putExtra(Constants.EXTRA_ID_EVT, it.id)
+                    requireContext().startActivity(intent)
+                }
+            }
+
+        })
+        binding.rvEvt.adapter = evtAdapter
+        binding.floatingActionButton.setOnClickListener {
+
+        }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        activity?.menuInflater?.inflate(R.menu.menu_events,menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.item_event_go -> {
+                binding.tvEventTitle.text = "Voy a ir"
+                typeEvent = TypeFilterEvent.GOTOEVENTS
+            }
+            R.id.item_event_public -> {
+                binding.tvEventTitle.text = "Eventos"
+                typeEvent = TypeFilterEvent.PUBLICEVENTS
+                viewModel.callPublicEvent()
+
+            }
+            R.id.item_event_myevents -> {
+                binding.tvEventTitle.text = "Mis eventos"
+                typeEvent = TypeFilterEvent.MYEVENTS
+                viewModel.callMyEvents()
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }
