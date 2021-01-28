@@ -18,6 +18,7 @@ class EventViewModel : ViewModel() {
     val listEvents: MutableLiveData<List<Event>> =  MutableLiveData()
     val event: MutableLiveData<Event> =  MutableLiveData()
     val isDeleteEvt: MutableLiveData<Boolean> =  MutableLiveData()
+    val isUpdateUserEvent: MutableLiveData<Boolean> =  MutableLiveData()
     val messageException: MutableLiveData<String> =  MutableLiveData()
 
 
@@ -114,5 +115,26 @@ class EventViewModel : ViewModel() {
 
     fun getCurrentUserUID(): String{
         return auth.uid!!
+    }
+
+    /**
+     * Obtener evento
+     *
+     */
+    fun userGoToEvent(
+        evt: Event
+    ) {
+        firestore.collection("events").document(evt.id).update(
+            mapOf(
+                "users" to evt.users,
+                "users_confirm" to evt.users_confirm
+            )
+        ).addOnSuccessListener {
+            isUpdateUserEvent.value = true
+        }.addOnFailureListener {
+            isUpdateUserEvent.value = false
+            messageException.value = it.message
+        }
+
     }
 }

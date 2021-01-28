@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.widget.*
+import android.widget.ImageView
 import androidx.databinding.adapters.Converters
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
@@ -24,7 +24,7 @@ class MethodUtil {
         fun generateID(): String{
             return UUID.randomUUID().toString()
         }
-    fun getDayOfDate(date: Date): String{
+        fun getDayOfDate(date: Date): String{
         val calendar: Calendar = Calendar.getInstance()
         calendar.time = date
 
@@ -33,6 +33,26 @@ class MethodUtil {
         fun getMonthName(date: Date):String{
             val calendar: Calendar = Calendar.getInstance()
             calendar.time = date
+
+            when(calendar.get(Calendar.MONTH)+1){
+                1 -> return "Enero"
+                2 -> return "Febrero"
+                3 -> return "Marzo"
+                4 -> return "Abril"
+                5 -> return "Mayo"
+                6 -> return "Junio"
+                7 -> return "Julio"
+                8 -> return "Agosto"
+                9 -> return "Septiembre"
+                10 -> return "Octubre"
+                11 -> return "Noviembre"
+                12 -> return "Diciembre"
+
+            }
+            return  "-";
+        }
+        fun getMonthName( calendar: Calendar):String{
+
 
             when(calendar.get(Calendar.MONTH)+1){
                 1 -> return "Enero"
@@ -72,12 +92,24 @@ class MethodUtil {
 
             return context.resources.getColor(R.color.white, context.theme)
         }
-
         fun getDateToString(date: Timestamp): String{
             val sfd = SimpleDateFormat("dd/MM/yyyy")
             return sfd.format(date.toDate())
         }
+        fun getCalendarByString(date: String): Calendar{
+            val cal = Calendar.getInstance()
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            cal.time = sdf.parse(date)
+            return cal
 
+        }
+        fun getTypeEvent(str: String): Int{
+            when (str){
+                "Publico" -> return Constants.TYPE_EVENT_PUBLIC
+                "Privado" -> return Constants.TYPE_EVENT_PRIVATE
+            }
+            return -1;
+        }
         fun loadImageFromStorage(avatar: String, context: Context, imageView: ImageView){
 
             FirebaseStorage.getInstance().getReferenceFromUrl(avatar).downloadUrl.addOnCompleteListener { task ->

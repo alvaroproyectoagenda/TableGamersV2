@@ -75,4 +75,9 @@
         <item>Poco usado</item>
         <item>Antiguo</item>
     </string-array>
+
+    <string-array name="event_type">
+        <item>Publico</item>
+        <item>Privado</item>
+    </string-array>
 </resources>

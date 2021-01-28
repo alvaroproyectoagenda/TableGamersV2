@@ -110,7 +110,10 @@ class EventFragment : Fragment(), StructViewData {
                     })
                 }
                 TypeFilterEvent.GOTOEVENTS -> {
-                    //none
+                    val intent = Intent(context, EventDetailActivity::class.java)
+                    intent.putExtra(Constants.EXTRA_ID_EVT, it.id)
+                    requireContext().startActivity(intent)
+
                 }
                 TypeFilterEvent.PUBLICEVENTS -> {
 
@@ -123,7 +126,7 @@ class EventFragment : Fragment(), StructViewData {
         })
         binding.rvEvt.adapter = evtAdapter
         binding.floatingActionButton.setOnClickListener {
-
+            startActivity(Intent(context, EventFormActivity::class.java))
         }
     }
 

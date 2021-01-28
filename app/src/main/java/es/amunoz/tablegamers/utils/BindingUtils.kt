@@ -73,6 +73,22 @@ fun Spinner.setItemSpinerState(item: String?){
 
 }
 
+@BindingAdapter("setItemSpinerTypeEvt")
+fun Spinner.setItemSpinerTypeEvt(item: Int?){
+
+    if(item!=null){
+
+
+        when(item){
+            Constants.TYPE_EVENT_PUBLIC-> setSelection(0)
+            Constants.TYPE_EVENT_PRIVATE-> setSelection(1)
+        }
+
+
+    }
+
+}
+
 @BindingAdapter("setNumberOfDay")
 fun TextView.setNumberOfDay(item: Event){
     var tmp = item.date.toDate()
