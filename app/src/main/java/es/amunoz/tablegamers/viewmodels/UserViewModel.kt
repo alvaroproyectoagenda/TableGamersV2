@@ -8,7 +8,9 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.ktx.Firebase
+import es.amunoz.tablegamers.models.Message
 import es.amunoz.tablegamers.models.User
+import es.amunoz.tablegamers.utils.Constants
 import es.amunoz.tablegamers.utils.Constants.Companion.TAG_ERROR
 import java.lang.Exception
 import java.lang.reflect.Executable
@@ -27,6 +29,7 @@ class UserViewModel: ViewModel() {
     val messageExceptionRegisterUser: MutableLiveData<String> =  MutableLiveData()
     val messageException: MutableLiveData<String> =  MutableLiveData()
     val user: MutableLiveData<User> =  MutableLiveData()
+    val users: MutableLiveData<List<User>> =  MutableLiveData()
 
 
     init{
@@ -174,5 +177,27 @@ class UserViewModel: ViewModel() {
             }
 
 
+    }
+    //All users
+    fun callUsers(
+
+    ) {
+
+        firestore.collection("users").get()
+            .addOnSuccessListener { documents ->
+                val userListTemp =   arrayListOf<User>()
+                for (document in documents) {
+                    var user = document.toObject(User::class.java)
+                    userListTemp.add(user)
+                }
+
+                users.value = userListTemp
+
+
+            }
+            .addOnFailureListener { exception ->
+                users.value = null
+                Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
+            }
     }
 }

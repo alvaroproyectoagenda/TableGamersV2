@@ -119,6 +119,13 @@ class MethodUtil {
             }
         }
         @SuppressLint("UseCompatLoadingForDrawables")
+        fun getDrawableIcAprobed(tag: String, context: Context): Drawable? {
+            return context.resources.getDrawable(
+                R.drawable.ic_comprobado,
+                context.theme
+            )
+        }
+        @SuppressLint("UseCompatLoadingForDrawables")
         fun getDrawableAvatar(tag: String, context: Context): Drawable? {
 
             when(tag){

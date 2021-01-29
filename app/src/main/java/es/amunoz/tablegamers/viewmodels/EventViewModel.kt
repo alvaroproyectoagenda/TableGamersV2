@@ -18,6 +18,7 @@ class EventViewModel : ViewModel() {
     val listEvents: MutableLiveData<List<Event>> =  MutableLiveData()
     val event: MutableLiveData<Event> =  MutableLiveData()
     val isDeleteEvt: MutableLiveData<Boolean> =  MutableLiveData()
+    val isAddEvt: MutableLiveData<Boolean> =  MutableLiveData()
     val isUpdateUserEvent: MutableLiveData<Boolean> =  MutableLiveData()
     val messageException: MutableLiveData<String> =  MutableLiveData()
 
@@ -89,6 +90,24 @@ class EventViewModel : ViewModel() {
             }
             .addOnFailureListener { exception ->
                 isDeleteEvt.value = false
+                messageException.value = exception.message
+                Log.i("err",exception.message)
+            }
+    }
+    /**
+     * CREAMOS evento
+     *
+     */
+    fun addEvent(
+        evt: Event
+    ) {
+
+        firestore.collection("events").document(evt.id).set(evt)
+            .addOnSuccessListener {
+                isAddEvt.value = true
+            }
+            .addOnFailureListener { exception ->
+                isAddEvt.value = false
                 messageException.value = exception.message
                 Log.i("err",exception.message)
             }

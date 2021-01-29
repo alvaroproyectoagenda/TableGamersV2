@@ -186,6 +186,7 @@
                             android:layout_marginTop="8dp"
                             android:entries="@array/event_type"
                             android:tag="state"
+                            android:spinnerMode="dialog"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -198,15 +199,26 @@
                             android:layout_marginTop="8dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/sp_fevt_state">
+                            app:layout_constraintTop_toBottomOf="@+id/btn_show_user">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/tiet_fevt_plazas"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Plazas"
-                                 />
+                                android:hint="Plazas" />
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btn_show_user"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Invitar"
+                            android:visibility="gone"
+                            android:onClick="clickInvitations"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/sp_fevt_state" />
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
