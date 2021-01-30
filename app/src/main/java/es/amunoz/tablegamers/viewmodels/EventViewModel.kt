@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import es.amunoz.tablegamers.models.Ad
 import es.amunoz.tablegamers.models.Event
+import es.amunoz.tablegamers.models.Invitation
 import es.amunoz.tablegamers.models.Message
 import es.amunoz.tablegamers.utils.Constants
 
@@ -112,6 +113,8 @@ class EventViewModel : ViewModel() {
                 Log.i("err",exception.message)
             }
     }
+
+
     /**
      * Obtener evento
      *

@@ -9,9 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppStyle">
-        <activity android:name=".ui.event.EventFormActivity"></activity>
+        <activity android:name=".ui.event.EventFormActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".ui.event.EventDetailActivity"
+
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ad.FormAdActivity"
@@ -19,17 +22,21 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ad.AdDetailActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".NavigationMenuActivity" />
         <activity
             android:name=".ui.profile.AvatarActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".NavigationMenuActivity" />
         <activity
             android:name=".NavigationMenuActivity"
             android:label="@string/title_activity_navigation_menu"
+           android:screenOrientation="portrait"
             android:theme="@style/AppStyle.NoActionBar" />
-        <activity
+        <activit
             android:name=".RegisterActivity"
             android:parentActivityName=".LoginActivity"
+
             android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"

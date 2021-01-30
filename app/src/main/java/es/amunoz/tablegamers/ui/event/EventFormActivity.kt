@@ -1,7 +1,9 @@
 package es.amunoz.tablegamers.ui.event
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -155,7 +157,7 @@ class EventFormActivity : AppCompatActivity(), StructViewData {
             if(isPrivate){
                 val data = getListIDUsers()
                 usersVal = data
-                usersConfirmVal = data
+                //usersConfirmVal = data
                 maxPeopleVal = "${data.size}"
             }
 
@@ -220,13 +222,29 @@ class EventFormActivity : AppCompatActivity(), StructViewData {
 
         newFragment.show(supportFragmentManager, "datePicker")
     }
+    fun loadDialogList(list: List<User>){
+        adapterSpinnerUser = UsersSpinnerAdapter(this, list)
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Invitaciones")
+            .setCancelable(true)
+            .setAdapter(adapterSpinnerUser, DialogInterface.OnClickListener { dialog, which ->
+               })
+            .setNegativeButton("Cancelar", null)
+            .setPositiveButton("Aceptar", DialogInterface.OnClickListener { dialog, which ->
+                val tam = adapterSpinnerUser.listUserSelected.size
+                if(adapterSpinnerUser.listUserSelected.size!=0){
+                    binding.tietFevtPlazas.setText("$tam")
+                }
+            })
 
+        dialog.create()
+        dialog.show()
+
+    }
     fun clickInvitations(view: View) {
            viewModelUser.callUsers()
            viewModelUser.users.observe(this,{
-            adapterSpinnerUser = UsersSpinnerAdapter(this, it)
-            binding.spFevtState.adapter = adapterSpinnerUser
-            binding.spFevtState.performClick()
+               loadDialogList(it)
         })
     }
 
