@@ -8,6 +8,7 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.ktx.Firebase
+import es.amunoz.tablegamers.models.Invitation
 import es.amunoz.tablegamers.models.Message
 import es.amunoz.tablegamers.models.User
 import es.amunoz.tablegamers.utils.Constants
@@ -49,6 +50,10 @@ class UserViewModel: ViewModel() {
         if(idUser != null){
             firestore.collection("users").document(idUser).set(user)
                 .addOnSuccessListener {
+                    var invitationsModel = Invitation().apply {
+                        id = idUser
+                    }
+                    firestore.collection("invitations").document(idUser).set(invitationsModel)
                     isAddUser.value = true
                 }
                 .addOnFailureListener {

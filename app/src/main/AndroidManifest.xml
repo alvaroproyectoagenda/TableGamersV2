@@ -14,7 +14,6 @@
             />
         <activity
             android:name=".ui.event.EventDetailActivity"
-
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ad.FormAdActivity"
@@ -33,7 +32,7 @@
             android:label="@string/title_activity_navigation_menu"
            android:screenOrientation="portrait"
             android:theme="@style/AppStyle.NoActionBar" />
-        <activit
+        <activity
             android:name=".RegisterActivity"
             android:parentActivityName=".LoginActivity"
 

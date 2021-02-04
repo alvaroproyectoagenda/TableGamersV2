@@ -21,13 +21,11 @@ import es.amunoz.tablegamers.adapters.UserMessageAdapter
 import es.amunoz.tablegamers.adapters.UsersSpinnerAdapter
 import es.amunoz.tablegamers.databinding.ActivityEventFormBinding
 import es.amunoz.tablegamers.databinding.ActivityFormAdBinding
-import es.amunoz.tablegamers.models.Ad
-import es.amunoz.tablegamers.models.Event
-import es.amunoz.tablegamers.models.User
-import es.amunoz.tablegamers.models.UserMessageAd
+import es.amunoz.tablegamers.models.*
 import es.amunoz.tablegamers.utils.*
 import es.amunoz.tablegamers.viewmodels.AdViewModel
 import es.amunoz.tablegamers.viewmodels.EventViewModel
+import es.amunoz.tablegamers.viewmodels.InvitationViewModel
 import es.amunoz.tablegamers.viewmodels.UserViewModel
 import java.util.*
 
@@ -35,6 +33,7 @@ class EventFormActivity : AppCompatActivity(), StructViewData {
     private lateinit var binding: ActivityEventFormBinding
     private lateinit var viewModel: EventViewModel
     private lateinit var viewModelUser: UserViewModel
+    private lateinit var viewModelInvitation: InvitationViewModel
     private lateinit var myEvt: Event
     private var dateEvent: Timestamp = Timestamp.now()
     private var isSelectedDate = false
@@ -50,6 +49,7 @@ class EventFormActivity : AppCompatActivity(), StructViewData {
     override fun initViewModel() {
         viewModel = ViewModelProvider(this).get(EventViewModel::class.java)
         viewModelUser = ViewModelProvider(this).get(UserViewModel::class.java)
+        viewModelInvitation = ViewModelProvider(this).get(InvitationViewModel::class.java)
         initBinding()
         viewModel.isAddEvt.observe(this,{
 
@@ -122,8 +122,8 @@ class EventFormActivity : AppCompatActivity(), StructViewData {
             validateField.add("Tipo")
             validate = false
         }
-        if (ValidatorUtil.isEmpty(descriptionVal)   ){
-            validateField.add("Tipo")
+        if (ValidatorUtil.isEmpty(descriptionVal) || descriptionVal.length> Constants.MAX_CHARSET_DESCRIPTIONS_EVENT  ){
+            validateField.add("Descripcion ((Max ${Constants.MAX_CHARSET_DESCRIPTIONS_EVENT} caracteres\")")
             validate = false
         }
         if (!isSelectedDate   ){
@@ -154,10 +154,10 @@ class EventFormActivity : AppCompatActivity(), StructViewData {
             var usersVal = listOf<String>()
             var usersConfirmVal =  listOf<String>()
 
+            //NOTE: Solo rellenamos users no users_confirm, ese array se rellenará cuando acepteo o no la invitacion
             if(isPrivate){
                 val data = getListIDUsers()
                 usersVal = data
-                //usersConfirmVal = data
                 maxPeopleVal = "${data.size}"
             }
 
@@ -174,9 +174,15 @@ class EventFormActivity : AppCompatActivity(), StructViewData {
                 users_confirm = usersConfirmVal
 
             }
-            viewModel.addEvent(evt)
+
             if(isPrivate){
-                //add invitatinos node
+                usersVal.forEach {
+                    viewModelInvitation.addInvitation(evt.id, it)
+                }
+                viewModel.addEvent(evt)
+
+            }else{
+                viewModel.addEvent(evt)
             }
 
         }

@@ -12,7 +12,9 @@ import android.widget.RelativeLayout
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.balysv.materialripple.MaterialRippleLayout
+import com.bumptech.glide.Glide
 import com.bumptech.glide.util.Util
+import com.google.firebase.storage.FirebaseStorage
 import es.amunoz.tablegamers.R
 import es.amunoz.tablegamers.utils.MethodUtil
 import kotlinx.coroutines.coroutineScope
@@ -31,16 +33,21 @@ class ImageSliderAdapter(private val activity: Activity, var images: List<String
         super.setPrimaryItem(container, position, `object`)
     }
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val avatar: String = images[position]
+
         val inflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val v: View = inflater.inflate(R.layout.item_image_slider, container, false)
-        val image = v.findViewById<View>(R.id.image) as ImageView
+        //val avatar: String = images[position]
+        val avatar: String = getItems(position)
+        //val image = v.findViewById<View>(R.id.image) as ImageView
+        val image = v.findViewWithTag<View>("imgSlider") as ImageView
+        Log.i("uri", "${position-1}")
 
-        MethodUtil.loadImageFromStorage(avatar,activity,image)
 
 
-        Log.i("position",position.toString())
-        Log.i("avatar",avatar)
+       MethodUtil.loadImageFromStorage(avatar, activity, image)
+
+
+
         (container as ViewPager).addView(v)
         return v
     }

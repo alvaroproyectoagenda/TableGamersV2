@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.adapters.Converters
 import com.bumptech.glide.Glide
@@ -118,6 +120,7 @@ class MethodUtil {
                 }
             }
         }
+
         @SuppressLint("UseCompatLoadingForDrawables")
         fun getDrawableIcAprobed(tag: String, context: Context): Drawable? {
             return context.resources.getDrawable(

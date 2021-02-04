@@ -18,5 +18,7 @@ class Constants {
         const val VIEW_TYPE_CHAT_OTHER = 2
         const val TYPE_EVENT_PUBLIC = 1
         const val TYPE_EVENT_PRIVATE = 2
+        const val MAX_CHARSET_DESCRIPTIONS_EVENT = 600
+        const val MAX_CHARSET_DESCRIPTIONS_AD = 245
     }
 }

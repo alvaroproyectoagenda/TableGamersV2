@@ -29,6 +29,7 @@ class AdDetailActivity : AppCompatActivity(), StructViewData {
     private lateinit var idAd: String
     private lateinit var myAd: Ad
     private  var listImagesStorage = listOf<String>()
+    private var indexGallery = 0;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,9 +53,8 @@ class AdDetailActivity : AppCompatActivity(), StructViewData {
                     it.images
                 }
 
-
                 initBinding()
-                initSliderImage()
+                showImage()
             })
 
 
@@ -68,36 +68,55 @@ class AdDetailActivity : AppCompatActivity(), StructViewData {
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_ad_detail)
         binding.ad = myAd
+        binding.fbLeft.setOnClickListener {
+            previusImage()
+        }
+        binding.fbRigth.setOnClickListener {
+            nextImage()
+        }
 
 
     }
-
+        private fun nextImage(){
+            indexGallery++;
+            showImage()
+        }
+    private fun previusImage(){
+        indexGallery--;
+        showImage()
+    }
+    private fun showImage(){
+        if(indexGallery>=0 && indexGallery<listImagesStorage.size){
+            initBottomDots(binding.layoutDots, listImagesStorage.size, indexGallery)
+          MethodUtil.loadImageFromStorage(listImagesStorage[indexGallery], this, binding.ivDetailsItem)
+        }
+    }
      private fun initSliderImage(){
-        var adapterImagesSlide = ImageSliderAdapter(this, listOf())
-        adapterImagesSlide.setItems(listImagesStorage)
+         /*   var adapterImagesSlide = ImageSliderAdapter(this, listOf())
+           adapterImagesSlide.setItems(listImagesStorage)
 
-         binding.viewPagerImageSlider.adapter= adapterImagesSlide
-         binding.viewPagerImageSlider.currentItem = 0
-         initBottomDots(binding.layoutDots, adapterImagesSlide.count, 0)
-         binding.viewPagerImageSlider.addOnPageChangeListener(object :
-             ViewPager.OnPageChangeListener {
+           binding.viewPagerImageSlider.adapter= adapterImagesSlide
+            binding.viewPagerImageSlider.currentItem = 0
+            initBottomDots(binding.layoutDots, adapterImagesSlide.count, 0)
+            binding.viewPagerImageSlider.addOnPageChangeListener(object :
+                ViewPager.OnPageChangeListener {
 
-             override fun onPageScrollStateChanged(state: Int) {
-             }
+                override fun onPageScrollStateChanged(state: Int) {
+                }
 
-             override fun onPageScrolled(
-                 position: Int,
-                 positionOffset: Float,
-                 positionOffsetPixels: Int
-             ) {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
 
-             }
+                }
 
-             override fun onPageSelected(position: Int) {
-                 initBottomDots(binding.layoutDots, adapterImagesSlide.count, position)
-             }
+                override fun onPageSelected(position: Int) {
+                    initBottomDots(binding.layoutDots, adapterImagesSlide.count, position)
+                }
 
-         })
+            })*/
 
     }
      private fun initBottomDots(linearLayout: LinearLayout, size: Int, current: Int){

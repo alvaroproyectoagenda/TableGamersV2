@@ -41,11 +41,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/iv_details_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.viewpager.widget.ViewPager
+          <!--  <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager_image_slider"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
@@ -53,7 +61,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:background="@color/grey_50" />
+                android:background="@color/grey_50" />-->
 
             <LinearLayout
                 android:id="@+id/layout_dots"
@@ -63,6 +71,37 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:orientation="horizontal" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fb_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/layout_dots"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:elevation="5dp"
+                app:borderWidth="0dp"
+                app:srcCompat="@drawable/ic_arrow_left"
+                android:backgroundTint="@color/colorPrimaryDark"
+                app:tint="@color/white"  />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fb_rigth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/layout_dots"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="5dp"
+                app:borderWidth="0dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:clickable="true"
+                app:srcCompat="@drawable/ic_arrow_right"
+                app:tint="@color/white" />
 
         </RelativeLayout>
 
@@ -181,7 +220,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:maxHeight="125dp"
+            android:maxHeight="135dp"
             android:text="@{ad.description}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 

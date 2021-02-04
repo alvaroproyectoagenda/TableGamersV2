@@ -59,24 +59,49 @@ class EventViewModel : ViewModel() {
     fun callMyEvents(
 
     ) {
+        val user =auth.currentUser?.uid
+        if (user != null) {
 
-        firestore.collection("events").whereEqualTo("create_by", auth.currentUser?.uid).get()
-            .addOnSuccessListener { documents ->
-                var adsListTemp = arrayListOf<Event>()
-                for (document in documents) {
-                    var event = document.toObject(Event::class.java)
-                    adsListTemp.add(event)
+            firestore.collection("events").whereEqualTo("create_by", user).get()
+                .addOnSuccessListener { documents ->
+                    var adsListTemp = arrayListOf<Event>()
+                    for (document in documents) {
+                        var event = document.toObject(Event::class.java)
+                        adsListTemp.add(event)
+                    }
+                    listEvents.value = adsListTemp;
+
+
                 }
-                listEvents.value = adsListTemp;
-
-
-            }
-            .addOnFailureListener { exception ->
-                listEvents.value = null;
-                Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
-            }
+                .addOnFailureListener { exception ->
+                    listEvents.value = null;
+                    Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
+                }
+        }
     }
+    fun callGoToEvents(
 
+    ) {
+        val user =auth.currentUser?.uid
+        if (user != null) {
+
+            firestore.collection("events").whereArrayContains("users_confirm", user).get()
+                .addOnSuccessListener { documents ->
+                    var adsListTemp = arrayListOf<Event>()
+                    for (document in documents) {
+                        var event = document.toObject(Event::class.java)
+                        adsListTemp.add(event)
+                    }
+                    listEvents.value = adsListTemp;
+
+
+                }
+                .addOnFailureListener { exception ->
+                    listEvents.value = null;
+                    Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
+                }
+        }
+    }
     /**
      * Borramos evento
      *

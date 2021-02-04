@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -165,7 +166,7 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
         var titleVal = binding.tietFadTitle.text.toString()
         var priceVal = binding.tietFadPrice.text.toString()
         var stateVal = binding.spFadState.selectedItem.toString()
-        var poblationVal = binding.spFadPoblation.selectedItem.toString()
+        var poblationVal = binding.tietFadPoblation.text.toString()
         var provinceVal =  binding.spFadProvince.selectedItem.toString()
         var descriptionVal = binding.tietFadDescription.text.toString()
 
@@ -225,7 +226,7 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
         var titleVal = binding.tietFadTitle.text.toString()
         var priceVal = binding.tietFadPrice.text.toString()
         var stateVal = binding.spFadState.selectedItem.toString()
-        var poblationVal = binding.spFadPoblation.selectedItem.toString()
+        var poblationVal = binding.tietFadPoblation.text.toString()
         var provinceVal =  binding.spFadProvince.selectedItem.toString()
         var descriptionVal = binding.tietFadDescription.text.toString()
 
@@ -248,8 +249,8 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
             validateField.add("Población y/o Provincia")
             validate = false
         }
-        if (ValidatorUtil.isEmpty(descriptionVal) ){
-            validateField.add("Descripcion")
+        if (ValidatorUtil.isEmpty(descriptionVal) || descriptionVal.length> Constants.MAX_CHARSET_DESCRIPTIONS_AD){
+            validateField.add("Descripcion (Max ${Constants.MAX_CHARSET_DESCRIPTIONS_AD} caracteres")
             validate = false
         }
 
@@ -302,6 +303,7 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
         val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
         binding.ivFadHedar.setImageBitmap(bitmap)
         binding.ivFadHedar.adjustViewBounds = true
+        binding.ivFadHedar.scaleType = ImageView.ScaleType.CENTER_CROP
     }
 
     private fun saveAd(ad: Ad){

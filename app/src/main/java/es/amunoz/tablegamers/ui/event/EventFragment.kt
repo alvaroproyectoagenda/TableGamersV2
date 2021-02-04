@@ -18,6 +18,8 @@ import es.amunoz.tablegamers.databinding.FragmentAdBinding
 import es.amunoz.tablegamers.databinding.FragmentEventBinding
 import es.amunoz.tablegamers.ui.ad.AdDetailActivity
 import es.amunoz.tablegamers.ui.ad.FormAdActivity
+import es.amunoz.tablegamers.ui.event.EventDetailActivity
+import es.amunoz.tablegamers.ui.event.EventFormActivity
 import es.amunoz.tablegamers.utils.*
 import es.amunoz.tablegamers.viewmodels.AdViewModel
 import es.amunoz.tablegamers.viewmodels.EventViewModel
@@ -83,8 +85,23 @@ class EventFragment : Fragment(), StructViewData {
         viewModel.listEvents.observe(viewLifecycleOwner, {
             it?.let {
                 evtAdapter.submitList(it)
+                evtAdapter.notifyDataSetChanged()
                 Log.i("cambios", "cambios")
             }
+        })
+        viewModel.isDeleteEvt.observe(viewLifecycleOwner, {
+            var typeMessage = TypeMessage.SUCCESS
+            var message = "Evento eliminado"
+            if(!it){
+                typeMessage = TypeMessage.ERROR
+                message = "Error al eliminar evento"
+            }
+            val dialog = MessageDialog(requireContext(), typeMessage, message)
+            dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                override fun onClickOKButton() {
+                    viewModel.callMyEvents()
+                }
+            })
         })
     }
 
@@ -103,8 +120,7 @@ class EventFragment : Fragment(), StructViewData {
                     dialog.setOnClickListenerOKButton(object :
                         OnClickListenerConfirmDialogDeleteAd {
                         override fun onClickOKButton() {
-                            Toast.makeText(context, "liminado " + it.title, Toast.LENGTH_SHORT)
-                                .show()
+                          viewModel.deleteEvent(it.id)
 
                         }
                     })
@@ -138,14 +154,17 @@ class EventFragment : Fragment(), StructViewData {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.item_event_go -> {
-                binding.tvEventTitle.text = "Voy a ir"
-                typeEvent = TypeFilterEvent.GOTOEVENTS
-            }
+
             R.id.item_event_public -> {
                 binding.tvEventTitle.text = "Eventos"
                 typeEvent = TypeFilterEvent.PUBLICEVENTS
                 viewModel.callPublicEvent()
+
+            }
+            R.id.item_event_go -> {
+                binding.tvEventTitle.text = "Voy a ir"
+                typeEvent = TypeFilterEvent.GOTOEVENTS
+                viewModel.callGoToEvents()
 
             }
             R.id.item_event_myevents -> {
