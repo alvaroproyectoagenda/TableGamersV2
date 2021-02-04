@@ -87,11 +87,11 @@ class EventDetailActivity : AppCompatActivity(), StructViewData {
             binding.btnGoEvent.text = "Este evento lo creaste tú"
             binding.btnGoEvent.isEnabled = false
         }else{
-            if(myEvt.users.isNotEmpty() && myEvt.users.size == myEvt.max_people){
+            if(myEvt.users_confirm.isNotEmpty() && myEvt.users_confirm.size == myEvt.max_people){
                 binding.btnGoEvent.text = "Plazas agotadas"
                 binding.btnGoEvent.isEnabled = false
             }else{
-                if(myEvt.users.isNotEmpty() && myEvt.users.contains(viewModel.getCurrentUserUID())){
+                if(myEvt.users_confirm.isNotEmpty() && myEvt.users_confirm.contains(viewModel.getCurrentUserUID())){
                     binding.btnGoEvent.text =  "Ya vas a asistir a este evento"
                     binding.btnGoEvent.isEnabled = false
                 }else{

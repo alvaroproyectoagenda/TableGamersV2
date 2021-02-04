@@ -101,10 +101,10 @@ fun TextView.setMonthName(item: Event){
 }
 @BindingAdapter("setMaxPlaces")
 fun TextView.setMaxPlaces(item: Event){
-    if(item.users.isEmpty()){
+    if(item.users_confirm.isEmpty()){
         text =  "${item.max_people}/${item.max_people}"
     }else{
-        text =  "${(item.max_people -item.users.size  )}/${item.max_people}"
+        text =  "${(item.max_people -item.users_confirm.size  )}/${item.max_people}"
     }
 
 }
