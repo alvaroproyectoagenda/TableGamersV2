@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.Query
 import es.amunoz.tablegamers.models.Ad
 import es.amunoz.tablegamers.models.Message
 import es.amunoz.tablegamers.models.User
@@ -16,34 +17,38 @@ class MessageViewModel: ViewModel() {
 
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var auth = FirebaseAuth.getInstance()
-    val listAds: MutableLiveData<List<Message>> =  MutableLiveData()
+    val listChat: MutableLiveData<List<Message>> =  MutableLiveData()
     val listUserMessage: MutableLiveData<List<User>> =  MutableLiveData()
 
     init{
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
     }
 
-    /**
-     * Obtenemos los usuarios con los que tienes mensajes
-     *
-     */
-    fun callMessage(
-    idAd: String
+    fun getUser():String{
+        return auth.currentUser?.uid!!
+    }
+
+    fun callChat(
+    idAd: String,
+    idUser: String
     ) {
 
-        firestore.collection("messages").document(idAd).collection("KbVw2vFDtDXcBh8LFWKXSftPKZR2").get()
+        firestore.collection("messages").document(idAd).collection(idUser).orderBy("date",Query.Direction.ASCENDING).get()
             .addOnSuccessListener { documents ->
 
+                var listMessageCache = mutableListOf<Message>()
                 for (document in documents) {
                     var message = document.toObject(Message::class.java)
-                    Log.i("asdas","asdasd");
+
+                    listMessageCache.add(message)
                 }
+                listChat.value = listMessageCache
 
 
 
             }
             .addOnFailureListener { exception ->
-              //  listAds.value = null
+                listChat.value = null
                 Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
             }
     }
@@ -54,24 +59,42 @@ class MessageViewModel: ViewModel() {
         firestore.collection("users_messages_ads").document(idAd).get()
             .addOnSuccessListener { document ->
 
+                if (document.exists()) {
 
-                val userMessageAd = document.toObject(UserMessageAd::class.java)
-                val listUserMessageCache: MutableList<User> = mutableListOf()
-                    for(userId in userMessageAd?.users!!){
-                        firestore.collection("users").document(userId).get().addOnSuccessListener { user ->
-                           val u = user.toObject(User::class.java)
-                           listUserMessageCache.add(u!!)
-                        }.addOnFailureListener {
-                            Log.i("nino_e",it.message)
+                    val userMessageAd = document.toObject(UserMessageAd::class.java)
+                    val listUserMessageCache: MutableList<User> = mutableListOf()
+                    val arrayUsersMessage = userMessageAd?.users!!
+
+                    if (arrayUsersMessage.isNotEmpty()) {
+
+
+                        arrayUsersMessage.forEachIndexed { index, userId ->
+                            firestore.collection("users").document(userId).get()
+                                .addOnSuccessListener { user ->
+                                    val u = user.toObject(User::class.java)
+                                    listUserMessageCache.add(u!!)
+                                    if (index == arrayUsersMessage.size - 1) {
+                                        listUserMessage.value = listUserMessageCache
+                                    }
+                                }.addOnFailureListener {
+                                Log.i("nino_e", it.message)
+                            }
                         }
+
+
+                    } else {
+                        listUserMessage.value = listUserMessageCache
+
+                    }
+                }else{
+                    listUserMessage.value = mutableListOf()
+                }
+                }
+                    .addOnFailureListener { exception ->
+                        //  listAds.value = null
+                        Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
                     }
 
-                listUserMessage.value = listUserMessageCache
 
-            }
-            .addOnFailureListener { exception ->
-                //  listAds.value = null
-                Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
-            }
     }
 }

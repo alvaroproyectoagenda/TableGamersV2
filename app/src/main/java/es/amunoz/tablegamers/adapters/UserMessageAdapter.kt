@@ -24,7 +24,7 @@ class UserMessageAdapter(val clickListener: UserMenssageListener): ListAdapter<U
 
         fun bind(item: User, clickListener: UserMenssageListener) {
 
-          //  binding.itemUmUserName.text = item.name
+
             binding.user = item
             binding.clickListener = clickListener
             binding.executePendingBindings()

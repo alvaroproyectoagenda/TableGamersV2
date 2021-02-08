@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import es.amunoz.tablegamers.R
 import es.amunoz.tablegamers.adapters.AdsAdapter
 import es.amunoz.tablegamers.adapters.AdsListener
@@ -18,8 +19,7 @@ import es.amunoz.tablegamers.adapters.UserMessageAdapter
 import es.amunoz.tablegamers.databinding.FragmentMessagesBinding
 import es.amunoz.tablegamers.ui.ad.AdDetailActivity
 import es.amunoz.tablegamers.ui.ad.FormAdActivity
-import es.amunoz.tablegamers.utils.Constants
-import es.amunoz.tablegamers.utils.StructViewData
+import es.amunoz.tablegamers.utils.*
 import es.amunoz.tablegamers.viewmodels.AdViewModel
 import es.amunoz.tablegamers.viewmodels.MessageViewModel
 
@@ -27,10 +27,13 @@ import es.amunoz.tablegamers.viewmodels.MessageViewModel
 class MessagesFragment : Fragment(), StructViewData  {
 
     private lateinit var viewModel: MessageViewModel
+    private lateinit var viewModelAd: AdViewModel
     private lateinit var myInflater: LayoutInflater
     private lateinit var myContainer: ViewGroup
     private lateinit var binding: FragmentMessagesBinding
     private lateinit var userMessageAdapter: UserMessageAdapter
+    private lateinit var adAdapter: AdsAdapter
+    private lateinit var idAdSelected: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,27 +67,62 @@ class MessagesFragment : Fragment(), StructViewData  {
     }
 
     override fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(MessageViewModel::class.java)
-        viewModel.callUserMessage("294e813a-eccf-48cb-a783-73ef668052a1")
-        viewModel.listUserMessage.observe(viewLifecycleOwner, {
-            it?.let {
-                userMessageAdapter.submitList(it)
 
+        viewModelAd = ViewModelProvider(this).get(AdViewModel::class.java)
+        viewModelAd.callAdsUser(FirebaseAuth.getInstance().uid.toString())
+        viewModelAd.listAds.observe(viewLifecycleOwner, {
+            it?.let {
+                adAdapter.submitList(it)
             }
         })
+
+
     }
 
     override fun initBinding() {
         binding = DataBindingUtil.inflate(
             myInflater, R.layout.fragment_messages, myContainer, false
         )
-        userMessageAdapter = UserMessageAdapter(UserMenssageListener { user ->
-        /*    var intent = Intent(context, AdDetailActivity::class.java)
+        adAdapter =  AdsAdapter(AdsListener { ad ->
+            idAdSelected = ad.id
+            loadUserChat()
+        })
+        binding.rvUsermessage.adapter = adAdapter
 
-            intent.putExtra(Constants.EXTRA_ID_AD, ad.id)
-            requireContext().startActivity(intent)*/
+    }
+
+    private fun loadUserChat(){
+        viewModel = ViewModelProvider(this).get(MessageViewModel::class.java)
+        viewModel.callUserMessage(idAdSelected)
+        viewModel.listUserMessage.observe(viewLifecycleOwner, {
+            it?.let {
+                if (it.isEmpty()) {
+                    var dialog = MessageDialog(requireContext(), TypeMessage.INFO, "No tienes mensajes para este anuncio")
+                    dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                        override fun onClickOKButton() {
+
+                            initBinding()
+                            initViewModel()
+                        }
+                    })
+                } else {
+                    userMessageAdapter.submitList(it)
+
+                }
+
+            }
+        })
+
+        userMessageAdapter = UserMessageAdapter(UserMenssageListener { user ->
+            var intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra(Constants.EXTRA_ID_AD, idAdSelected)
+            intent.putExtra(Constants.EXTRA_ID_USER, user.id)
+            requireContext().startActivity(intent)
 
         })
+
         binding.rvUsermessage.adapter = userMessageAdapter
+
+
     }
 }
