@@ -33,11 +33,11 @@
         android:inputType="textPersonName"
         android:hint="Escribe tu mensaje..."
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ib_chat_send"
+        app:layout_constraintEnd_toStartOf="@+id/dialog_send_btn"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/ib_chat_send"
+        android:id="@+id/ib_send_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

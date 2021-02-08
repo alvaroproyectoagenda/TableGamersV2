@@ -19,6 +19,7 @@ class MessageViewModel: ViewModel() {
     private var auth = FirebaseAuth.getInstance()
     val listChat: MutableLiveData<List<Message>> =  MutableLiveData()
     val listUserMessage: MutableLiveData<List<User>> =  MutableLiveData()
+    val isResponseMessage: MutableLiveData<Boolean> =  MutableLiveData()
 
     init{
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
@@ -27,17 +28,43 @@ class MessageViewModel: ViewModel() {
     fun getUser():String{
         return auth.currentUser?.uid!!
     }
+    fun responseMessage(
+        msg: Message,
+        idAd: String,
+        idUser: String)
+    {
+        firestore.collection("messages").document(idAd).collection(idUser).document(msg.id).set(msg)
+            .addOnCompleteListener {
+                isResponseMessage.value = it.isSuccessful
+        }.addOnFailureListener {
 
+                isResponseMessage.value = false
+        }
+    }
     fun callChat(
     idAd: String,
     idUser: String
     ) {
 
-        firestore.collection("messages").document(idAd).collection(idUser).orderBy("date",Query.Direction.ASCENDING).get()
-            .addOnSuccessListener { documents ->
+        firestore.collection("messages").document(idAd).collection(idUser).orderBy("date",Query.Direction.ASCENDING).addSnapshotListener { documents, error ->
+            var listMessageCache = mutableListOf<Message>()
+            if (documents != null) {
+                for (document in documents) {
+
+                    var message = document.toObject(Message::class.java)
+
+                    listMessageCache.add(message)
+                }
+            }
+            listChat.value = listMessageCache
+
+
+        }
+          /*  .addOnSuccessListener { documents ->
 
                 var listMessageCache = mutableListOf<Message>()
                 for (document in documents) {
+
                     var message = document.toObject(Message::class.java)
 
                     listMessageCache.add(message)
@@ -50,7 +77,7 @@ class MessageViewModel: ViewModel() {
             .addOnFailureListener { exception ->
                 listChat.value = null
                 Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
-            }
+            }*/
     }
     fun callUserMessage(
         idAd: String

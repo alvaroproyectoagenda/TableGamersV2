@@ -2,9 +2,12 @@ package es.amunoz.tablegamers.ui.ad
 
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -144,5 +147,16 @@ class AdDetailActivity : AppCompatActivity(), StructViewData {
                 PorterDuff.Mode.SRC_ATOP
             )
         }
+    }
+
+    fun clickSendMessage(view: View) {
+        var dialog = SendMessageDialog(this)
+        dialog.setOnClickListenerSendButton(object : OnClickListenerSendMessageDialog {
+            override fun onClickSendButton() {
+                var msg = dialog.editText.text.toString()
+                Log.i("eee",msg)
+               // Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

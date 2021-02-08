@@ -6,12 +6,14 @@ import android.text.TextUtils
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.Timestamp
 import es.amunoz.tablegamers.R
 import es.amunoz.tablegamers.adapters.ChatAdapter
 import es.amunoz.tablegamers.databinding.ActivityAdDetailBinding
 import es.amunoz.tablegamers.databinding.ActivityChatBinding
 import es.amunoz.tablegamers.models.Message
 import es.amunoz.tablegamers.utils.Constants
+import es.amunoz.tablegamers.utils.MethodUtil
 import es.amunoz.tablegamers.utils.StructViewData
 import es.amunoz.tablegamers.viewmodels.AdViewModel
 import es.amunoz.tablegamers.viewmodels.MessageViewModel
@@ -41,7 +43,14 @@ class ChatActivity : AppCompatActivity(), StructViewData {
             viewModel.callChat(idAd,idUser)
             viewModel.listChat.observe(this, {
                 adapterChat = ChatAdapter(it as MutableList<Message>)
+                adapterChat.notifyDataSetChanged()
                 binding.rvChat.adapter = adapterChat
+            })
+            viewModel.isResponseMessage.observe(this,{
+                if(it){
+                    viewModel.callChat(idAd,idUser)
+                    binding.etMsg.text.clear()
+                }
             })
 
 
@@ -52,9 +61,14 @@ class ChatActivity : AppCompatActivity(), StructViewData {
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_chat)
 
-        binding.ibChatSend.setOnClickListener {
+        binding.ibSendChat.setOnClickListener {
            if(!TextUtils.isEmpty( binding.etMsg.text)){
-               Toast.makeText(this, binding.etMsg.text, Toast.LENGTH_SHORT).show()
+               var msg = Message().apply {
+                   id = MethodUtil.generateID()
+                   message = binding.etMsg.text.toString()
+                   user = viewModel.getUser()
+               }
+               viewModel.responseMessage(msg,idAd,idUser)
            }
         }
 

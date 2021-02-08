@@ -233,6 +233,7 @@
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
         android:text="@string/chat"
+        android:onClick="clickSendMessage"
         app:icon="@drawable/ic_menu_message"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
