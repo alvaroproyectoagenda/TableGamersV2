@@ -25,6 +25,7 @@ class ChatActivity : AppCompatActivity(), StructViewData {
     private lateinit var viewModel: MessageViewModel
     private lateinit var idAd: String
     private lateinit var idUser: String
+    private lateinit var idUserCreateAd: String
     private lateinit var adapterChat: ChatAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,16 +40,31 @@ class ChatActivity : AppCompatActivity(), StructViewData {
         if(bundle?.getString(Constants.EXTRA_ID_AD) != null) {
             idAd = bundle.getString(Constants.EXTRA_ID_AD)!!
             idUser = bundle.getString(Constants.EXTRA_ID_USER)!!
+            idUserCreateAd = bundle.getString(Constants.EXTRA_ID_USER_CREATE)!!
             viewModel = ViewModelProvider(this).get(MessageViewModel::class.java)
-            viewModel.callChat(idAd,idUser)
+
+            if(idUser!=idUserCreateAd){
+                viewModel.callChat(idAd,idUser)
+            }else{
+                var myUser = viewModel.getUser()
+                viewModel.callChat(idAd,myUser)
+            }
+
             viewModel.listChat.observe(this, {
+
+
                 adapterChat = ChatAdapter(it as MutableList<Message>)
                 adapterChat.notifyDataSetChanged()
                 binding.rvChat.adapter = adapterChat
             })
             viewModel.isResponseMessage.observe(this,{
                 if(it){
-                    viewModel.callChat(idAd,idUser)
+                    if(idUser!=idUserCreateAd){
+                        viewModel.callChat(idAd,idUser)
+                    }else{
+                        var myUser = viewModel.getUser()
+                        viewModel.callChat(idAd,myUser)
+                    }
                     binding.etMsg.text.clear()
                 }
             })
@@ -63,12 +79,20 @@ class ChatActivity : AppCompatActivity(), StructViewData {
 
         binding.ibSendChat.setOnClickListener {
            if(!TextUtils.isEmpty( binding.etMsg.text)){
+
+
                var msg = Message().apply {
                    id = MethodUtil.generateID()
                    message = binding.etMsg.text.toString()
                    user = viewModel.getUser()
                }
-               viewModel.responseMessage(msg,idAd,idUser)
+
+               var userCreateChat =  idUser
+               if(idUser==idUserCreateAd){
+                   userCreateChat = viewModel.getUser()
+               }
+
+             viewModel.responseMessage(msg,idAd,userCreateChat)
            }
         }
 

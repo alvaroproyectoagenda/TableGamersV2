@@ -45,7 +45,7 @@ data class SendMessageDialog(private var myContext: Context): View.OnClickListen
     override fun onClick(v: View?) {
         if (v != null) {
             when (v.id){
-                R.id.btnClose -> {
+                R.id.btnSendMsg -> {
                     listener.onClickSendButton()
                     dimissDialog()
                 }

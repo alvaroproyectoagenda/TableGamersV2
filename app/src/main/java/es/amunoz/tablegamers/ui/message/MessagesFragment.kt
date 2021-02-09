@@ -34,6 +34,7 @@ class MessagesFragment : Fragment(), StructViewData  {
     private lateinit var userMessageAdapter: UserMessageAdapter
     private lateinit var adAdapter: AdsAdapter
     private lateinit var idAdSelected: String
+    private lateinit var userCreateAd: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +70,8 @@ class MessagesFragment : Fragment(), StructViewData  {
     override fun initViewModel() {
 
         viewModelAd = ViewModelProvider(this).get(AdViewModel::class.java)
-        viewModelAd.callAdsUser(FirebaseAuth.getInstance().uid.toString())
+        viewModelAd.callAdChat()
+       // viewModelAd.callAdsUser(FirebaseAuth.getInstance().uid.toString())
         viewModelAd.listAds.observe(viewLifecycleOwner, {
             it?.let {
                 adAdapter.submitList(it)
@@ -85,6 +87,7 @@ class MessagesFragment : Fragment(), StructViewData  {
         )
         adAdapter =  AdsAdapter(AdsListener { ad ->
             idAdSelected = ad.id
+            userCreateAd = ad.create_for
             loadUserChat()
         })
         binding.rvUsermessage.adapter = adAdapter
@@ -94,6 +97,7 @@ class MessagesFragment : Fragment(), StructViewData  {
     private fun loadUserChat(){
         viewModel = ViewModelProvider(this).get(MessageViewModel::class.java)
         viewModel.callUserMessage(idAdSelected)
+        binding.progressBar.visibility = View.VISIBLE
         viewModel.listUserMessage.observe(viewLifecycleOwner, {
             it?.let {
                 if (it.isEmpty()) {
@@ -103,11 +107,13 @@ class MessagesFragment : Fragment(), StructViewData  {
 
                             initBinding()
                             initViewModel()
+
                         }
                     })
+                    binding.progressBar.visibility = View.GONE
                 } else {
                     userMessageAdapter.submitList(it)
-
+                    binding.progressBar.visibility = View.GONE
                 }
 
             }
@@ -117,6 +123,7 @@ class MessagesFragment : Fragment(), StructViewData  {
             var intent = Intent(context, ChatActivity::class.java)
             intent.putExtra(Constants.EXTRA_ID_AD, idAdSelected)
             intent.putExtra(Constants.EXTRA_ID_USER, user.id)
+            intent.putExtra(Constants.EXTRA_ID_USER_CREATE, userCreateAd)
             requireContext().startActivity(intent)
 
         })

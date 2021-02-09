@@ -20,8 +20,10 @@ import es.amunoz.tablegamers.R
 import es.amunoz.tablegamers.adapters.ImageSliderAdapter
 import es.amunoz.tablegamers.databinding.ActivityAdDetailBinding
 import es.amunoz.tablegamers.models.Ad
+import es.amunoz.tablegamers.models.Message
 import es.amunoz.tablegamers.utils.*
 import es.amunoz.tablegamers.viewmodels.AdViewModel
+import es.amunoz.tablegamers.viewmodels.MessageViewModel
 
 
 class AdDetailActivity : AppCompatActivity(), StructViewData {
@@ -29,6 +31,8 @@ class AdDetailActivity : AppCompatActivity(), StructViewData {
 
     private lateinit var binding: ActivityAdDetailBinding
     private lateinit var viewModel: AdViewModel
+    private lateinit var viewModelMessage: MessageViewModel
+
     private lateinit var idAd: String
     private lateinit var myAd: Ad
     private  var listImagesStorage = listOf<String>()
@@ -46,6 +50,24 @@ class AdDetailActivity : AppCompatActivity(), StructViewData {
         if(bundle?.getString(Constants.EXTRA_ID_AD) != null) {
             idAd = bundle.getString(Constants.EXTRA_ID_AD)!!
             viewModel = ViewModelProvider(this).get(AdViewModel::class.java)
+            viewModelMessage = ViewModelProvider(this).get(MessageViewModel::class.java)
+            viewModelMessage.isResponseMessage.observe(this,{
+                if(it){
+                    var dialog = MessageDialog(this,TypeMessage.SUCCESS, "Mensaje enviado correctamente")
+                    dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                        override fun onClickOKButton() {
+
+                        }
+                    })
+                }else{
+                    var dialog = MessageDialog(this,TypeMessage.WARNING, viewModelMessage.messageException.value.toString())
+                    dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
+                        override fun onClickOKButton() {
+
+                        }
+                    })
+                }
+            })
             viewModel.getAdByID(idAd)
             viewModel.myAd.observe(this, {
 
@@ -153,9 +175,15 @@ class AdDetailActivity : AppCompatActivity(), StructViewData {
         var dialog = SendMessageDialog(this)
         dialog.setOnClickListenerSendButton(object : OnClickListenerSendMessageDialog {
             override fun onClickSendButton() {
-                var msg = dialog.editText.text.toString()
-                Log.i("eee",msg)
-               // Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+                var msgVal = dialog.editText.text.toString()
+
+                val idUser = viewModelMessage.getUser()
+                var msg = Message().apply {
+                    id = MethodUtil.generateID()
+                    message = msgVal
+                    user = idUser
+                }
+                viewModelMessage.createChat(msg,myAd.id,idUser)
             }
         })
     }

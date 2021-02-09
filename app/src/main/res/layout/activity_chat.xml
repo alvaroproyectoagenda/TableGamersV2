@@ -28,12 +28,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Escribe tu mensaje..."
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/dialog_send_btn"
+        app:layout_constraintEnd_toStartOf="@+id/ib_send_chat"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
@@ -48,5 +49,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_send" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

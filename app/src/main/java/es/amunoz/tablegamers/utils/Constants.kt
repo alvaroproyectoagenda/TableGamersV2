@@ -4,10 +4,13 @@ class Constants {
 
     companion object{
         const val SPLASH_SCREEN_TIME: Long = 3000
+        const val CHAT_TIME: Long = 6000
+
         const val TAG_ERROR: String   = "ERROR"
         const val PATH_STORAGE_DEFAULT_AVATAR ="default_avatar.png";
         const val EXTRA_ID_AD = "EXTRA_ID_AD"
         const val EXTRA_ID_USER = "EXTRA_ID_USER"
+        const val EXTRA_ID_USER_CREATE = "EXTRA_ID_USER_CREATE"
         const val EXTRA_ID_EVT = "EXTRA_ID_AD"
         val STATES_ARRAY = listOf("Nuevo", "Poco usado", "Antiguo")
         const val ONE_MEGABYTE: Long = 1024 * 1024

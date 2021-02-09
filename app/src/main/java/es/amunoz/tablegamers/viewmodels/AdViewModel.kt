@@ -7,8 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
-import es.amunoz.tablegamers.models.Ad
-import es.amunoz.tablegamers.models.User
+import es.amunoz.tablegamers.models.*
 import es.amunoz.tablegamers.utils.Constants
 import es.amunoz.tablegamers.utils.Filter
 
@@ -75,6 +74,7 @@ class AdViewModel: ViewModel() {
                 Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
             }
     }
+
     /**
      * Obtenemos los anuncios de la base de datos
      *
@@ -155,6 +155,21 @@ class AdViewModel: ViewModel() {
 
         firestore.collection("ads").document(ad.id).set(ad)
             .addOnSuccessListener {
+                saveMessageAds(ad)
+            }
+            .addOnFailureListener {
+                isAddAd.value = false
+                messageException.value = "Error al registrar el usuario"
+            }
+    }
+    fun saveMessageAds(ad: Ad){
+        val listUsers = listOf<String>(ad.create_for)
+        val userMessageAd = UserMessageAd().apply {
+            id = ad.id
+            users = listUsers
+        }
+        firestore.collection("users_messages_ads").document(ad.id).set(userMessageAd)
+            .addOnSuccessListener {
                 isAddAd.value = true
             }
             .addOnFailureListener {
@@ -180,6 +195,67 @@ class AdViewModel: ViewModel() {
             }
     }
 
+
+    fun callAdChat(
+
+    ){
+
+
+        val user =auth.currentUser?.uid
+        if (user != null) {
+
+
+            firestore.collection("users_messages_ads").whereArrayContains("users", user).get()
+                .addOnSuccessListener { documents ->
+
+                    val arrayAd = arrayListOf<Ad>()
+                    val arrayAdId = arrayListOf<String>()
+                    for (document in documents) {
+                        var userMessageAd = document.toObject(UserMessageAd::class.java)
+                        arrayAdId.add(userMessageAd.id)
+                    }
+
+                    if(arrayAdId.isNotEmpty()){
+                        arrayAdId.forEachIndexed { index, adId ->
+
+                            firestore.collection("ads").document(adId).get()
+                                .addOnSuccessListener {
+                                    if(it.exists()){
+
+
+                                        val ad = it.toObject(Ad::class.java)
+                                        if (ad != null) {
+                                            arrayAd.add(ad)
+
+                                        }
+                                        if (index == arrayAd.size - 1) {
+                                            listAds.value = arrayAd
+                                        }
+
+                                    }
+
+
+                                }
+                                .addOnFailureListener { exception ->
+                                    listAds.value = null
+                                    messageException.value = exception.message
+                                    Log.i("err", exception.message)
+                                }
+
+                        }
+                    }else{
+                        listAds.value = arrayAd
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
+                }
+
+
+
+
+        }
+    }
 
 
 
