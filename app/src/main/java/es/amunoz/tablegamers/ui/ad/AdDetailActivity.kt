@@ -116,34 +116,7 @@ class AdDetailActivity : AppCompatActivity(), StructViewData {
           MethodUtil.loadImageFromStorage(listImagesStorage[indexGallery], this, binding.ivDetailsItem)
         }
     }
-     private fun initSliderImage(){
-         /*   var adapterImagesSlide = ImageSliderAdapter(this, listOf())
-           adapterImagesSlide.setItems(listImagesStorage)
 
-           binding.viewPagerImageSlider.adapter= adapterImagesSlide
-            binding.viewPagerImageSlider.currentItem = 0
-            initBottomDots(binding.layoutDots, adapterImagesSlide.count, 0)
-            binding.viewPagerImageSlider.addOnPageChangeListener(object :
-                ViewPager.OnPageChangeListener {
-
-                override fun onPageScrollStateChanged(state: Int) {
-                }
-
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
-                ) {
-
-                }
-
-                override fun onPageSelected(position: Int) {
-                    initBottomDots(binding.layoutDots, adapterImagesSlide.count, position)
-                }
-
-            })*/
-
-    }
      private fun initBottomDots(linearLayout: LinearLayout, size: Int, current: Int){
         val dots = mutableListOf<ImageView>()
         linearLayout.removeAllViews()

@@ -25,7 +25,7 @@ data class SendMessageDialog(private var myContext: Context): View.OnClickListen
         //Configuramos el Dialog
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_send_message)
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
 
         //Cargamos todos los elementos y mostramos
         val lp = WindowManager.LayoutParams()

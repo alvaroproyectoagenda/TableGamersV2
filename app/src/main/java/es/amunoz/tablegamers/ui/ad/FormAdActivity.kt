@@ -189,8 +189,8 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
             validateField.add("Población y/o Provincia")
             validate = false
         }
-        if (ValidatorUtil.isEmpty(descriptionVal) ){
-            validateField.add("Descripcion")
+        if (ValidatorUtil.isEmpty(descriptionVal) || descriptionVal.length> Constants.MAX_CHARSET_DESCRIPTIONS_AD){
+            validateField.add("Descripcion (Max ${Constants.MAX_CHARSET_DESCRIPTIONS_AD} caracteres")
             validate = false
         }
 

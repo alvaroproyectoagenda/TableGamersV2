@@ -54,7 +54,7 @@ class RegisterActivity : AppCompatActivity(), StructViewData {
                 dialog.setOnClickListenerOKButton(object : OnClickListenerMessageDialog {
                     override fun onClickOKButton() {
 
-                        startActivity(Intent(applicationContext,RegisterActivity::class.java))
+                        startActivity(Intent(applicationContext,SplashScreenActivity::class.java))
                         finish()
                     }
                 })

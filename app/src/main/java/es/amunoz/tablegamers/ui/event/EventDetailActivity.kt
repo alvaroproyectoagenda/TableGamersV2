@@ -54,6 +54,7 @@ class EventDetailActivity : AppCompatActivity(), StructViewData {
                         override fun onClickOKButton() {
                             binding.btnGoEvent.text = "Ya vas a asistir a este evento"
                             binding.btnGoEvent.isEnabled = false
+                            finish()
                         }
                     })
                 }else{

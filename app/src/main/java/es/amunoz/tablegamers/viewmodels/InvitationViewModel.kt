@@ -122,6 +122,7 @@ class InvitationViewModel: ViewModel() {
             firestore.collection("invitations").document(user).get()
                 .addOnSuccessListener { document ->
 
+                    if(document.exists()){
                     val inv = document.toObject(Invitation::class.java)
 
                     val arrayInvitations = inv?.invitations!!
@@ -154,10 +155,11 @@ class InvitationViewModel: ViewModel() {
                             }
 
                     }
-                }else{
+                }else {
                         listEvents.value = arrayEventsInvitations
 
-                 }
+                    }
+                    }
                 }
                 .addOnFailureListener { exception ->
                     Log.w(Constants.TAG_ERROR, "Error getting documents: ", exception)
