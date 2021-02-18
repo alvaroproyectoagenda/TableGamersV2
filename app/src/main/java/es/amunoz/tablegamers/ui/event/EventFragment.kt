@@ -5,23 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.FirebaseAuth
 import es.amunoz.tablegamers.R
-import es.amunoz.tablegamers.adapters.AdsAdapter
-import es.amunoz.tablegamers.adapters.AdsListener
 import es.amunoz.tablegamers.adapters.EventAdapter
 import es.amunoz.tablegamers.adapters.EventListener
-import es.amunoz.tablegamers.databinding.FragmentAdBinding
 import es.amunoz.tablegamers.databinding.FragmentEventBinding
-import es.amunoz.tablegamers.ui.ad.AdDetailActivity
-import es.amunoz.tablegamers.ui.ad.FormAdActivity
-import es.amunoz.tablegamers.ui.event.EventDetailActivity
-import es.amunoz.tablegamers.ui.event.EventFormActivity
 import es.amunoz.tablegamers.utils.*
-import es.amunoz.tablegamers.viewmodels.AdViewModel
 import es.amunoz.tablegamers.viewmodels.EventViewModel
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -42,7 +33,12 @@ class EventFragment : Fragment(), StructViewData {
     }
     override fun onStart() {
         super.onStart()
-        initViewModel()
+         if(binding.tvEventTitle.text == "Voy a ir"){
+             typeEvent = TypeFilterEvent.GOTOEVENTS
+             viewModel.callGoToEvents()
+         }else{
+            initViewModel()
+         }
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,7 +88,7 @@ class EventFragment : Fragment(), StructViewData {
         viewModel.isDeleteEvt.observe(viewLifecycleOwner, {
             var typeMessage = TypeMessage.SUCCESS
             var message = "Evento eliminado"
-            if(!it){
+            if (!it) {
                 typeMessage = TypeMessage.ERROR
                 message = "Error al eliminar evento"
             }
@@ -111,7 +107,7 @@ class EventFragment : Fragment(), StructViewData {
         )
         binding.tvEventTitle.text = "Eventos"
         evtAdapter = EventAdapter(EventListener {
-            when(typeEvent) {
+            when (typeEvent) {
                 TypeFilterEvent.MYEVENTS -> {
                     val dialog = ConfirmDialogDeleteAd(
                         requireContext(),
@@ -120,7 +116,7 @@ class EventFragment : Fragment(), StructViewData {
                     dialog.setOnClickListenerOKButton(object :
                         OnClickListenerConfirmDialogDeleteAd {
                         override fun onClickOKButton() {
-                          viewModel.deleteEvent(it.id)
+                            viewModel.deleteEvent(it.id)
 
                         }
                     })
@@ -149,7 +145,7 @@ class EventFragment : Fragment(), StructViewData {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        activity?.menuInflater?.inflate(R.menu.menu_events,menu)
+        activity?.menuInflater?.inflate(R.menu.menu_events, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -5,8 +5,8 @@ class Constants {
     companion object{
         const val SPLASH_SCREEN_TIME: Long = 3000
         const val CHAT_TIME: Long = 8000
-
         const val TAG_ERROR: String   = "ERROR"
+        const val FRAGMENT_GOTO: String   = "FRAGMENT_GOTO"
         const val PATH_STORAGE_DEFAULT_AVATAR ="default_avatar.png";
         const val EXTRA_ID_AD = "EXTRA_ID_AD"
         const val EXTRA_ID_USER = "EXTRA_ID_USER"
@@ -18,6 +18,8 @@ class Constants {
         const val GS_FIRESTORE_AD_PATH = "gs://tablegamers-ecc11.appspot.com/ads/";
         const val MAX_IMAGES = 3
         const val PICK_IMAGE_REQUEST = 1
+        const val IMAGE_PICK_CODE = 1000;
+        const val PERMISSION_CODE = 1001;
         const val VIEW_TYPE_CHAT_ME = 1
         const val VIEW_TYPE_CHAT_OTHER = 2
         const val TYPE_EVENT_PUBLIC = 1

@@ -92,10 +92,11 @@ class MessageViewModel: ViewModel() {
 
     }
     fun callUserMessage(
-        idAd: String
+        idAd: String,
+        userCreateAd: String
     ) {
         val userUid =auth.currentUser?.uid
-
+        val isCreate: Boolean = userUid != userCreateAd
         firestore.collection("users_messages_ads").document(idAd).get()
             .addOnSuccessListener { document ->
 
@@ -110,19 +111,28 @@ class MessageViewModel: ViewModel() {
 
                     if (arrayUsersMessage.isNotEmpty()) {
 
+                        if(isCreate){
+                            firestore.collection("users").document(userCreateAd).get()
+                                .addOnSuccessListener { user ->
+                                    val u = user.toObject(User::class.java)
+                                    if (userUid!=null && u!=null && userUid!=u.id ) {
+                                        listUserMessageCache.add(u)
+                                    }
+                                        listUserMessage.value = listUserMessageCache
 
-                        arrayUsersMessage.forEachIndexed { index, userId ->
-
+                                }.addOnFailureListener {
+                                    Log.i("TAG", it.message)
+                                }
+                        }else{
+                            arrayUsersMessage.forEachIndexed { index, userId ->
 
                                 firestore.collection("users").document(userId).get()
                                     .addOnSuccessListener { user ->
                                         val u = user.toObject(User::class.java)
-                                        if (userUid!=null && u!=null && userUid!=u.id) {
+                                        if (userUid!=null && u!=null && userUid!=u.id ) {
                                             listUserMessageCache.add(u)
                                         }
                                         if (index == arrayUsersMessage.size - 1) {
-
-
 
                                             listUserMessage.value = listUserMessageCache
                                         }
@@ -130,7 +140,9 @@ class MessageViewModel: ViewModel() {
                                         Log.i("TAG", it.message)
                                     }
 
+                            }
                         }
+
 
 
                     } else {

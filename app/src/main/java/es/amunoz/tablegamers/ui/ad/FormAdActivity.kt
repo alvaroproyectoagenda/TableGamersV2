@@ -1,9 +1,13 @@
 package es.amunoz.tablegamers.ui.ad
 
+import android.Manifest
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.content.ClipData
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -11,6 +15,8 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
@@ -20,6 +26,7 @@ import es.amunoz.tablegamers.R
 import es.amunoz.tablegamers.databinding.ActivityFormAdBinding
 import es.amunoz.tablegamers.models.Ad
 import es.amunoz.tablegamers.utils.*
+import es.amunoz.tablegamers.utils.Constants.Companion.PERMISSION_CODE
 import es.amunoz.tablegamers.viewmodels.AdViewModel
 
 class FormAdActivity : AppCompatActivity(), StructViewData {
@@ -47,6 +54,7 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
         if(requestCode == Constants.PICK_IMAGE_REQUEST && resultCode ==  RESULT_OK && data!=null){
             generateFilePath(data)
         }
+
     }
 
     override fun initViewModel() {
@@ -155,7 +163,7 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
       var intent = Intent()
       intent.type = "image/*"
       intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-      intent.action = Intent.ACTION_GET_CONTENT
+      intent.action = Intent.ACTION_PICK
       startActivityForResult(
           Intent.createChooser(intent, "Selecciona hasta 3 imagenes"),
           Constants.PICK_IMAGE_REQUEST
@@ -353,7 +361,25 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
         })
     }
     fun clickUploadImages(view: View) {
-        showFileChooserImage()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_DENIED){
+                //permission denied
+                val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
+                //show popup to request runtime permission
+                requestPermissions(permissions, PERMISSION_CODE);
+            }
+            else{
+                //permission already granted
+                showFileChooserImage();
+            }
+        }
+        else{
+            //system OS is < Marshmallow
+            showFileChooserImage();
+        }
+
+       // showFileChooserImage()
     }
 
     fun clickSaveFormAd(view: View) {
@@ -366,6 +392,27 @@ class FormAdActivity : AppCompatActivity(), StructViewData {
 
     fun clickDeleteAd(view: View) {
         deleteAd()
+    }
+
+
+    /*=========
+
+   PERMISSION
+     ===========*/
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when(requestCode){
+            Constants.PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED){
+                    //permission from popup granted
+                    showFileChooserImage()
+                }
+                else{
+                    //permission from popup denied
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
 

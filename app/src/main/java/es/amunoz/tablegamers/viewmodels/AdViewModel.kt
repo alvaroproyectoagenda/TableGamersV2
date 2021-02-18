@@ -44,7 +44,6 @@ class AdViewModel: ViewModel() {
                     adsListTemp.add(ad)
                 }
                 listAds.value = adsListTemp
-
             }
             .addOnFailureListener { exception ->
                 listAds.value = null
@@ -224,7 +223,7 @@ class AdViewModel: ViewModel() {
 
 
                                         val ad = it.toObject(Ad::class.java)
-                                        if (ad != null) {
+                                        if (ad != null ) {
                                             arrayAd.add(ad)
 
                                         }

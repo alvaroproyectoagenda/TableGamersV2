@@ -96,7 +96,7 @@ class MessagesFragment : Fragment(), StructViewData  {
 
     private fun loadUserChat(){
         viewModel = ViewModelProvider(this).get(MessageViewModel::class.java)
-        viewModel.callUserMessage(idAdSelected)
+        viewModel.callUserMessage(idAdSelected, userCreateAd)
         binding.progressBar.visibility = View.VISIBLE
         viewModel.listUserMessage.observe(viewLifecycleOwner, {
             it?.let {
